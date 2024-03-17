@@ -1,0 +1,68 @@
+<section cdkDropListGroup>
+
+  <!--  Not Completed todos list.-->
+
+  <!--Head Section-->
+  <app-todo-list-head-section title="ToDos" [itemsQuantity]="todosService.notCompletedTodos().length"/>
+
+  <!-- Divider-->
+  <div class="h-0.5 bg-black bg-opacity-20 my-2 rounded"></div>
+
+  <!-- List-->
+  <ul
+    cdkDropList
+    [cdkDropListData]="todosService.notCompletedTodos()"
+    (cdkDropListDropped)="drop($event)"
+    class="flex flex-col gap-3"
+  >
+    @for (todo of todosService.notCompletedTodos(); track todo.id) {
+      <div
+        cdkDrag
+        [cdkDragData]="todo.id"
+        class="flex justify-between items-center"
+      >
+        <!--List item-->
+        <app-todo-list-item [todo]="todo" class="w-full"/>
+
+        <!--Delete button-->
+        <app-delete-todo [todoId]="todo.id"/>
+      </div>
+    } @empty {
+      <p class="m-auto text-sm text-red-400">No todos on this list.</p>
+    }
+  </ul>
+
+
+  <!--  Completed todos list-->
+
+  <!--Head Section-->
+  <app-todo-list-head-section title="Completed" [itemsQuantity]="todosService.completedTodos().length"/>
+
+  <!--Divider-->
+  <div class="h-0.5 bg-black bg-opacity-20 my-2 rounded"></div>
+
+  <!--List-->
+  <ul
+    cdkDropList
+    [cdkDropListData]="todosService.completedTodos()"
+    (cdkDropListDropped)="drop($event)"
+    class="flex flex-col gap-3"
+  >
+    @for (todo of todosService.completedTodos(); track todo.id) {
+      <div
+        cdkDrag
+        [cdkDragData]="todo.id"
+        class="flex justify-between items-center"
+      >
+        <!--List item-->
+        <app-todo-list-item [todo]="todo" class="w-full"/>
+
+        <!--Delete button-->
+        <app-delete-todo [todoId]="todo.id"/>
+      </div>
+    } @empty {
+      <p class="m-auto text-sm text-red-400">No todos on this list.</p>
+    }
+  </ul>
+
+</section>

@@ -1,1 +1,68 @@
-/* You can add global styles to this file, and also import other style files */
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$custom-pink-palette: (
+  50: #fdf2f8,
+  100: #fce7f3,
+  200: #fbcfe8,
+  300: #f9a8d4,
+  400: #f472b6,
+  500: #ec4899,
+  600: #db2777,
+  700: #be185d,
+  800: #9d174d,
+  900:#831843,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+    // ... continues to 900
+  )
+);
+
+$Todo-App-primary: mat.define-palette($custom-pink-palette, 400, 500, 600);
+$Todo-App-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$Todo-App-warn: mat.define-palette(mat.$red-palette);
+
+$kids-typography: mat.define-typography-config(
+  $font-family: 'Maiandra GD',
+);
+
+$Todo-App-theme: mat.define-dark-theme((
+  color: (
+    primary: $Todo-App-primary,
+    accent: $Todo-App-accent,
+    warn: $Todo-App-warn,
+  ),
+  typography: $kids-typography,
+  density: 0
+));
+
+@include mat.all-component-themes($Todo-App-theme);
+
+@import url('https://fonts.googleapis.com/css2?family=Madimi+One&family=Merienda:wght@300..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Maiandra GD", sans-serif;
+}
+
+.on-focus {
+  @apply focus:ring-offset-1 focus:outline-none focus:ring-offset-pink-300 focus:ring-2 focus:ring-pink-300;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
