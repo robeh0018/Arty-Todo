@@ -37,5 +37,6 @@ import {formatDatesForUI} from "../../../helpers";
 })
 export class TodoListItemComponent {
   @Input({required: true}) todo!: Todo;
+
   protected readonly formatDatesForUI = formatDatesForUI;
 }

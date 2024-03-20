@@ -1,17 +1,15 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {FirebaseDb} from "../../firebase.config";
 import {addDoc, collection, deleteDoc, doc, getDocs, query, Timestamp, updateDoc} from "firebase/firestore";
 // Models.
 import type {Todo, TodoData, TodosResponse} from "../../models";
+// Services.
+import {SnackBarService} from "../../services";
 
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FirestoreTodosService {
 
-  constructor() {
-  }
+  private snackBarService = inject(SnackBarService);
 
   async getAllTodos(): Promise<Todo[]> {
     try {
@@ -38,10 +36,13 @@ export class FirestoreTodosService {
         );
       })
 
+      this.snackBarService.showSuccessSnackBar('Todos loaded');
+
       return todos;
     } catch (e) {
 
       console.log(e)
+      this.snackBarService.showFailSnackBar(`Todos loaded`);
       throw e;
     }
   }
@@ -59,8 +60,12 @@ export class FirestoreTodosService {
 
       const {id: docId} = await addDoc(collectionRef, newTodoData);
 
+      this.snackBarService.showSuccessSnackBar('Todo added');
+
       return docId;
     } catch (e) {
+
+      this.snackBarService.showFailSnackBar('Todo added');
 
       console.log(e)
       throw e;
@@ -74,7 +79,11 @@ export class FirestoreTodosService {
       const docRef = doc(FirebaseDb, 'todos', todoId);
 
       await deleteDoc(docRef);
+
+      this.snackBarService.showSuccessSnackBar('Todo deleted');
     } catch (e) {
+
+      this.snackBarService.showFailSnackBar('Todo deleted');
 
       console.log(e)
       throw e;
@@ -84,9 +93,9 @@ export class FirestoreTodosService {
   async toggleCompleteTodo(todoId: string, todos: Todo[]): Promise<void> {
 
     try {
-      const todo = todos.find( todo => todo.id === todoId);
+      const todo = todos.find(todo => todo.id === todoId);
 
-      if ( !todo ) return;
+      if (!todo) return;
 
       const docRef = doc(FirebaseDb, 'todos', todoId);
 

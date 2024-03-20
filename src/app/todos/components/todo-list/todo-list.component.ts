@@ -11,7 +11,7 @@ import {
 // Models.
 import type {Todo} from "../../../models";
 // Services
-import {TodosService} from "../../../services";
+import {TodosService} from "../../../todos";
 // Components.
 import {TodoListHeadSectionComponent} from "../todo-list-head-section/todo-list-head-section.component";
 import {TodoListItemComponent} from "../todo-list-item/todo-list-item.component";
