@@ -1,8 +1,8 @@
 <main class="flex justify-center mt-20 w-full">
 
   <div class="w-full sm:w-[600px] p-1 sm:p-5 relative">
-
     <section class="flex justify-between items-center">
+
 
       <!--Search input-->
       <app-search-todo-input class="w-[400px]"/>
@@ -11,10 +11,16 @@
       <app-add-todo/>
 
     </section>
+    @defer (when !isLoading) {
 
-    <!--  todos list -->
-    <app-todo-list/>
+      <!--  todos list -->
+      <app-todo-list/>
+    } @placeholder () {
 
+      <div class="flex items-center justify-center h-[200px]">
+        <mat-spinner [diameter]="25" mode="indeterminate"/>
+      </div>
+    }
   </div>
 
 </main>

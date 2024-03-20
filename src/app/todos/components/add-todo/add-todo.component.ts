@@ -37,10 +37,10 @@ export class AddTodoComponent {
   handleAddTodoDialog(): void {
     const dialogRef = this.dialog.open(AddTodoDialogComponent);
 
-    dialogRef.afterClosed().pipe(take(1)).subscribe((result: { title: string, dueDate: Date } | undefined) => {
+    dialogRef.afterClosed().pipe(take(1)).subscribe(async (result: { title: string, dueDate: Date } | undefined) => {
       if (result === undefined) return;
 
-      this.todosService.addTodo(result.title, result.dueDate);
+      await this.todosService.addTodo(result.title, result.dueDate);
     })
   };
 

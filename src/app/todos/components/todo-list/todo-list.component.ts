@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, Signal} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
 import {
   CdkDrag,
@@ -34,12 +34,17 @@ import {DeleteTodoComponent} from "../delete-todo/delete-todo.component";
   styles: ``
 })
 export class TodoListComponent {
-  public todosService = inject(TodosService);
+  completedTodos: Signal<Todo[]>;
+  notCompletedTodos: Signal<Todo[]>;
+
+  private todosService = inject(TodosService);
 
   constructor() {
+    this.completedTodos = this.todosService.completedTodos;
+    this.notCompletedTodos = this.todosService.notCompletedTodos;
   }
 
-  drop(event: CdkDragDrop<Todo[]>) {
+  async drop(event: CdkDragDrop<Todo[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -53,7 +58,8 @@ export class TodoListComponent {
       //  Toggle completed on toDos.
       const todoId = event.item.data;
 
-      this.todosService.toggleComplete(todoId);
+      await
+        this.todosService.toggleComplete(todoId);
     }
   }
 }

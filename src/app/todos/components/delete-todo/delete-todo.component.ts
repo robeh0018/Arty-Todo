@@ -29,11 +29,14 @@ export class DeleteTodoComponent {
   private todosService = inject(TodosService);
   private dialog: MatDialog = inject(MatDialog);
 
+
   handleDeleteTodoModal() {
     const dialogRef = this.dialog.open(DeleteTodoDialogComponent);
 
-    dialogRef.afterClosed().pipe(take(1)).subscribe((result: boolean) => {
-      if (result) this.todosService.deleteTodo(this.todoId);
+    dialogRef.afterClosed().pipe(take(1)).subscribe(async (result: boolean) => {
+      if (result) await this.todosService.deleteTodo(this.todoId);
     })
   };
+
+
 }

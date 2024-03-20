@@ -1,12 +1,11 @@
-import {computed, Injectable, Signal, signal, WritableSignal} from '@angular/core';
+import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
+// Angular material.
+import {MatSnackBar} from "@angular/material/snack-bar";
 // UUID generator.
-import {v4 as uuidV4} from 'uuid';
-
 // Models
-import type {Todo} from "../models";
-
-// Testing data.
-import {initialTodos} from "../data/todos";
+import type {Todo} from "../../models";
+// FirestoreDb service.
+import {FirestoreTodosService} from "./firestore-todos.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +13,10 @@ import {initialTodos} from "../data/todos";
 export class TodosService {
   private todos: WritableSignal<Todo[]> = signal<Todo[]>([]);
   private searchedTodos: WritableSignal<Todo[]> = signal<Todo[]>([]);
+  // Firestore db service
+  private firestoreTodosService = inject(FirestoreTodosService);
+  //  Mat SnackBar service.
+  private _snackBar: MatSnackBar = inject(MatSnackBar);
 
   public notCompletedTodos: Signal<Todo[]> = computed(
     () => {
@@ -39,30 +42,52 @@ export class TodosService {
 
   public searchedTodosCount: Signal<number> = computed(() => this.searchedTodos().length);
 
-  constructor() {
-    this.todos.set(initialTodos);
-  }
+  public async loadTodosData() {
+    const todos = await this.firestoreTodosService.getAllTodos();
 
-  public addTodo(title: string, dueDate: Date): void {
+    this.todos.set(todos);
+  };
+
+  public async addTodo(title: string, dueDate: Date): Promise<void> {
+
+    const todoId = await this.firestoreTodosService.addTodo(title, dueDate);
 
     if (this.searchedTodosCount() > 0) {
-      this.updateSignalOnAddTodo(this.searchedTodos, {title, dueDate});
+      this.updateSignalOnAddTodo(this.searchedTodos, {title, dueDate, todoId});
     }
 
+    this.updateSignalOnAddTodo(this.todos, {title, dueDate, todoId});
 
-    this.updateSignalOnAddTodo(this.todos, {title, dueDate});
+    //  Todo: Hacer un servicio para el sanckBar y vincularlo a firebase-servcice creo q seria una buana option
+    // Show deleted snackBar.
+    this._snackBar.open('ToDo added successfully!', 'dismiss', {
+      horizontalPosition: "center",
+      verticalPosition: "bottom",
+      duration: 3000,
+    })
   };
 
 
-  public deleteTodo(id: string): void {
+  public async deleteTodo(id: string): Promise<void> {
+    await this.firestoreTodosService.deleteTodo(id);
+
     if (this.searchedTodosCount() > 0) {
       this.searchedTodos.update(searchedTodos => searchedTodos.filter(todo => todo.id !== id));
     }
 
     this.todos.update(todos => todos.filter(todo => todo.id !== id));
+
+    // Show deleted snackBar.
+    this._snackBar.open('ToDo deleted successfully!', 'dismiss', {
+      horizontalPosition: "center",
+      verticalPosition: "bottom",
+      duration: 3000,
+    })
   };
 
-  public toggleComplete(todoId: string): void {
+  public async toggleComplete(todoId: string) {
+
+    await this.firestoreTodosService.toggleCompleteTodo(todoId, this.todos())
 
     if (this.searchedTodosCount() > 0) {
 
@@ -89,14 +114,18 @@ export class TodosService {
 
 
   //  Private methods.
-  private updateSignalOnAddTodo(signal: WritableSignal<Todo[]>, fields: { title: string, dueDate: Date }): void {
-    const {title, dueDate} = fields;
+  private updateSignalOnAddTodo(signal: WritableSignal<Todo[]>, fields: {
+    title: string,
+    dueDate: Date,
+    todoId: string
+  }): void {
+    const {title, dueDate, todoId} = fields;
 
     signal.update(prevTodos => (
       [
         ...prevTodos, {
-        id: uuidV4(),
         title,
+        id: todoId,
         completed: false,
         date: new Date(dueDate),
       }

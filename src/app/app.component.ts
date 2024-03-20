@@ -27,5 +27,4 @@ import {
   ],
 })
 export class AppComponent {
-
 }

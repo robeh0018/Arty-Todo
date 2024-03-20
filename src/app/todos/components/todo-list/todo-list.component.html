@@ -1,9 +1,10 @@
 <section cdkDropListGroup>
 
+
   <!--  Not Completed todos list.-->
 
   <!--Head Section-->
-  <app-todo-list-head-section title="ToDos" [itemsQuantity]="todosService.notCompletedTodos().length"/>
+  <app-todo-list-head-section title="ToDos" [itemsQuantity]="notCompletedTodos().length"/>
 
   <!-- Divider-->
   <div class="h-0.5 bg-black bg-opacity-20 my-2 rounded"></div>
@@ -11,11 +12,11 @@
   <!-- List-->
   <ul
     cdkDropList
-    [cdkDropListData]="todosService.notCompletedTodos()"
+    [cdkDropListData]="notCompletedTodos()"
     (cdkDropListDropped)="drop($event)"
     class="flex flex-col gap-3"
   >
-    @for (todo of todosService.notCompletedTodos(); track todo.id) {
+    @for (todo of notCompletedTodos(); track todo.id) {
       <div
         cdkDrag
         [cdkDragData]="todo.id"
@@ -36,7 +37,7 @@
   <!--  Completed todos list-->
 
   <!--Head Section-->
-  <app-todo-list-head-section title="Completed" [itemsQuantity]="todosService.completedTodos().length"/>
+  <app-todo-list-head-section title="Completed" [itemsQuantity]="completedTodos().length"/>
 
   <!--Divider-->
   <div class="h-0.5 bg-black bg-opacity-20 my-2 rounded"></div>
@@ -44,11 +45,11 @@
   <!--List-->
   <ul
     cdkDropList
-    [cdkDropListData]="todosService.completedTodos()"
+    [cdkDropListData]="completedTodos()"
     (cdkDropListDropped)="drop($event)"
     class="flex flex-col gap-3"
   >
-    @for (todo of todosService.completedTodos(); track todo.id) {
+    @for (todo of completedTodos(); track todo.id) {
       <div
         cdkDrag
         [cdkDragData]="todo.id"
