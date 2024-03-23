@@ -1,10 +1,12 @@
 import {Routes} from '@angular/router';
+import {FirestoreTodosService, TodosService} from "./todos";
 
 export const routes: Routes = [
   {
     path: 'todos',
     title: 'TodoInterface List',
-    loadComponent: () => import('./pages/todos.page/todos.page.component' )
+    providers: [FirestoreTodosService, TodosService],
+    loadComponent: () => import('./pages/todos.page/todos.page.component')
   },
 
   {

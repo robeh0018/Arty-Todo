@@ -1,22 +1,15 @@
 import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
-// Angular material.
-import {MatSnackBar} from "@angular/material/snack-bar";
-// UUID generator.
 // Models
 import type {Todo} from "../../models";
 // FirestoreDb service.
 import {FirestoreTodosService} from "./firestore-todos.service";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TodosService {
   private todos: WritableSignal<Todo[]> = signal<Todo[]>([]);
   private searchedTodos: WritableSignal<Todo[]> = signal<Todo[]>([]);
   // Firestore db service
   private firestoreTodosService = inject(FirestoreTodosService);
-  //  Mat SnackBar service.
-  private _snackBar: MatSnackBar = inject(MatSnackBar);
 
   public notCompletedTodos: Signal<Todo[]> = computed(
     () => {
@@ -57,16 +50,7 @@ export class TodosService {
     }
 
     this.updateSignalOnAddTodo(this.todos, {title, dueDate, todoId});
-
-    //  Todo: Hacer un servicio para el sanckBar y vincularlo a firebase-servcice creo q seria una buana option
-    // Show deleted snackBar.
-    this._snackBar.open('ToDo added successfully!', 'dismiss', {
-      horizontalPosition: "center",
-      verticalPosition: "bottom",
-      duration: 3000,
-    })
   };
-
 
   public async deleteTodo(id: string): Promise<void> {
     await this.firestoreTodosService.deleteTodo(id);
@@ -76,13 +60,6 @@ export class TodosService {
     }
 
     this.todos.update(todos => todos.filter(todo => todo.id !== id));
-
-    // Show deleted snackBar.
-    this._snackBar.open('ToDo deleted successfully!', 'dismiss', {
-      horizontalPosition: "center",
-      verticalPosition: "bottom",
-      duration: 3000,
-    })
   };
 
   public async toggleComplete(todoId: string) {
@@ -106,11 +83,11 @@ export class TodosService {
       todo => todo.title.toLowerCase().includes(searchValue.toLowerCase()))
 
     this.searchedTodos.set(searchResult);
-  }
+  };
 
   public resetSearch(): void {
     this.searchedTodos.set([]);
-  }
+  };
 
 
   //  Private methods.

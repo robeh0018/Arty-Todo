@@ -3,7 +3,7 @@ import {NgIcon} from "@ng-icons/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 //  Services.
-import {TodosService} from "../../../services";
+import {TodosService} from "../../../todos";
 
 @Component({
   selector: 'app-search-todo-input',

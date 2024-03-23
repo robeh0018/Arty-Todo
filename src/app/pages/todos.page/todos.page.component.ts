@@ -1,9 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 // Todos components.
-import {AddTodoComponent, SearchTodoInputComponent, TodoListComponent} from "../../todos/components";
-import {TodosService} from "../../services";
 import {MatProgressSpinner, MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-// Todos services.
+import {AddTodoComponent, SearchTodoInputComponent, TodoListComponent, TodosService} from "../../todos";
 
 @Component({
   standalone: true,
