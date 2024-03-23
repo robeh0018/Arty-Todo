@@ -11,7 +11,7 @@ export class FirestoreTodosService {
 
   private snackBarService = inject(SnackBarService);
 
-  async getAllTodos(): Promise<Todo[]> {
+  public async getAllTodos(): Promise<Todo[]> {
     try {
       const queryConsult = query(collection(FirebaseDb, 'todos'))
       // where('userId', '==', payload));
@@ -48,7 +48,7 @@ export class FirestoreTodosService {
   }
 
 
-  async addTodo(title: string, dueDate: Date): Promise<string> {
+  public async addTodo(title: string, dueDate: Date): Promise<string> {
     try {
       const newTodoData: TodoData = {
         title,
@@ -73,7 +73,7 @@ export class FirestoreTodosService {
   }
 
 
-  async deleteTodo(todoId: string): Promise<void> {
+  public async deleteTodo(todoId: string): Promise<void> {
 
     try {
       const docRef = doc(FirebaseDb, 'todos', todoId);
@@ -90,7 +90,7 @@ export class FirestoreTodosService {
     }
   }
 
-  async toggleCompleteTodo(todoId: string, todos: Todo[]): Promise<void> {
+  public async toggleCompleteTodo(todoId: string, todos: Todo[]): Promise<void> {
 
     try {
       const todo = todos.find(todo => todo.id === todoId);
