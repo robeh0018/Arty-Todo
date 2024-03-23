@@ -34,8 +34,8 @@ import {DeleteTodoComponent} from "../delete-todo/delete-todo.component";
   styles: ``
 })
 export class TodoListComponent {
-  completedTodos: Signal<Todo[]>;
-  notCompletedTodos: Signal<Todo[]>;
+  public completedTodos: Signal<Todo[]>;
+  public notCompletedTodos: Signal<Todo[]>;
 
   private todosService = inject(TodosService);
 
@@ -44,7 +44,7 @@ export class TodoListComponent {
     this.notCompletedTodos = this.todosService.notCompletedTodos;
   }
 
-  async drop(event: CdkDragDrop<Todo[]>) {
+  public async drop(event: CdkDragDrop<Todo[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

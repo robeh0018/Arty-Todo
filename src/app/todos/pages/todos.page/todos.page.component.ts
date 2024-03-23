@@ -1,9 +1,10 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, NgZone, OnInit} from '@angular/core';
 // Todos components.
 import {MatProgressSpinner, MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {AddTodoComponent, SearchTodoInputComponent, TodoListComponent, TodosService} from "../../todos";
+import {AddTodoComponent, SearchTodoInputComponent, TodoListComponent, TodosService} from "../../index";
 
 @Component({
+  selector: 'app-todos-page',
   standalone: true,
   imports: [
     SearchTodoInputComponent,
@@ -19,9 +20,13 @@ import {AddTodoComponent, SearchTodoInputComponent, TodoListComponent, TodosServ
 export default class TodosPageComponent implements OnInit {
   public isLoading: boolean = true;
   private todosService = inject(TodosService);
+  private zone = inject(NgZone);
 
   async ngOnInit() {
-    await this.todosService.loadTodosData();
+    // This because angular was throwing me an exeption maybe a problem in firebase or the time take by the promise.
+    await this.zone.runOutsideAngular(async () => {
+      await this.todosService.loadTodosData();
+    })
     this.isLoading = false;
   }
 
