@@ -5,8 +5,11 @@ import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from "
 import {NgIcon, provideIcons} from "@ng-icons/core";
 // Shared
 import {DatepickerComponent} from "../../../shared";
+// Models
+import type {AddTodoForm} from "../../models";
 //  Bootstrap icons.
 import {bootstrapX} from '@ng-icons/bootstrap-icons';
+
 
 @Component({
   standalone: true,
@@ -28,13 +31,17 @@ import {bootstrapX} from '@ng-icons/bootstrap-icons';
 export class AddTodoDialogComponent {
   // Puedo usar la data para comprbar si es update o add
   //public data: AddTodoDialogData = inject(MAT_DIALOG_DATA);
-  public addTodoForm: FormGroup;
+  public addTodoForm: FormGroup<AddTodoForm>;
 
   private dialogRef: MatDialogRef<AddTodoDialogComponent> = inject(MatDialogRef);
   private fb = inject(FormBuilder);
 
   constructor() {
-    this.addTodoForm = this.fb.group({
+    this.addTodoForm = this.initForm();
+  }
+
+  private initForm(): FormGroup<AddTodoForm> {
+    return this.fb.group({
       title: ['', Validators.required],
       dueDate: [
         new Date().toISOString(), Validators.required,

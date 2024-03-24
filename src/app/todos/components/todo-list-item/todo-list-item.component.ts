@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
 // Models.
-import {Todo} from "../../../models";
+import {Todo} from "../../models";
 // Helpers.
 import {formatDatesForUI} from "../../../helpers";
 

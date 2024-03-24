@@ -9,7 +9,7 @@ import {
   transferArrayItem
 } from "@angular/cdk/drag-drop";
 // Models.
-import type {Todo} from "../../../models";
+import type {Todo} from "../../models";
 // Services
 import {TodosService} from "../../../todos";
 // Components.

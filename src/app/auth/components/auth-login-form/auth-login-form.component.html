@@ -1,4 +1,7 @@
-<form class="w-full flex flex-col gap-4">
+<form
+  [formGroup]="loginForm"
+  (ngSubmit)="onSubmit()"
+  class="w-full flex flex-col gap-4">
 
   <!--  email-->
   <div
@@ -14,6 +17,7 @@
         type="email"
         class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus "
         placeholder="Ex. example@google.com"
+        formControlName="email"
       >
     </div>
   </div>
@@ -41,6 +45,7 @@
         type="password"
         class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus "
         placeholder="6+ characters"
+        formControlName="password"
       >
     </div>
   </div>

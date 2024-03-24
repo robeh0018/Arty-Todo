@@ -1,4 +1,4 @@
-import type {Todo} from "../models";
+import type {Todo} from "../todos";
 import {v4 as uuidV4} from 'uuid';
 
 //  To simulated yesterday date.

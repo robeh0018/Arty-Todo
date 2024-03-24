@@ -1,7 +1,8 @@
-import {Component, inject} from '@angular/core';
+import {Component} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
-import {ActivatedRoute, RouterLink, RouterLinkActive} from "@angular/router";
+import {RouterLink, RouterLinkActive} from "@angular/router";
 import {MatRipple} from "@angular/material/core";
+import {SmileEmojiComponent} from "../smile-emoji/smile-emoji.component";
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,18 +12,16 @@ import {MatRipple} from "@angular/material/core";
     RouterLink,
     RouterLinkActive,
     MatRipple,
+    SmileEmojiComponent,
   ],
   templateUrl: './nav-bar.component.html',
   styles: ``
 })
 export class NavBarComponent {
-  private route = inject(ActivatedRoute);
-
 
   public navListItems!: { title: string; iconName: string; href: string }[];
 
   constructor() {
-      this.route.data.subscribe( res => console.log(res))
 
     this.navListItems = [
       {

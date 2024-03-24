@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {FirebaseDb} from "../../firebase.config";
 import {addDoc, collection, deleteDoc, doc, getDocs, query, Timestamp, updateDoc} from "firebase/firestore";
 // Models.
-import type {Todo, TodoData, TodosResponse} from "../../models";
+import type {Todo, TodoData, TodosResponse} from "../models";
 // Services.
 import {SnackBarService} from "../../services";
 
