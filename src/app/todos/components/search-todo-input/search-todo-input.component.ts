@@ -1,9 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
-
-//  Services.
 import {TodosService} from "../../../todos";
+import type {SearchTodoForm} from "../../models";
 
 @Component({
   selector: 'app-search-todo-input',
@@ -35,21 +34,25 @@ export class SearchTodoInputComponent implements OnInit {
   private fb = inject(FormBuilder);
   public todosService = inject(TodosService);
 
-  public searchForm: FormGroup;
+  public searchForm: FormGroup<SearchTodoForm>;
 
   constructor() {
-    this.searchForm = this.fb.group({
+    this.searchForm = this.initForm();
+  }
+
+  private initForm(): FormGroup<SearchTodoForm> {
+    return this.fb.group({
       searchValue: [''],
     })
   }
 
   ngOnInit() {
     this.searchForm.valueChanges.subscribe(({searchValue}) => {
-      if (searchValue.length === 0) {
+      if (searchValue && searchValue.length === 0) {
         this.todosService.resetSearch();
       }
 
-      this.todosService.searchTodos(searchValue);
+      this.todosService.searchTodos(searchValue!);
     })
   }
 }

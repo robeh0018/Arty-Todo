@@ -1,16 +1,18 @@
 import {Component, Input} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
+import {SmileEmojiComponent} from "../../../shared";
 
 @Component({
   selector: 'app-auth-title',
   standalone: true,
   imports: [
-    NgIcon
+    NgIcon,
+    SmileEmojiComponent
   ],
   template: `
     <div class="text-center antialiased">
       <!--Title-->
-      <h1 class="text-3xl font-extrabold ">
+      <h1 class="text-3xl font-extrabold">
         {{ title }}
       </h1>
 
@@ -19,9 +21,7 @@ import {NgIcon} from "@ng-icons/core";
         {{ subtitle }}
       </p>
 
-      <ng-icon
-        style="view-transition-name: todo-app-emoji"
-        class="text-pink-400 mt-1" name="bootstrapEmojiGrin"/>
+      <app-smile-emoji class="mt-1"/>
 
       @if (otherText) {
         <p class="mt-1">{{ otherText }}</p>

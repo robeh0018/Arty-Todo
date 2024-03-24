@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
 // Models
-import type {Todo} from "../../models";
+import type {Todo} from "../models";
 // FirestoreDb service.
 import {FirestoreTodosService} from "./firestore-todos.service";
 
