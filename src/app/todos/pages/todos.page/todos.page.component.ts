@@ -1,7 +1,8 @@
 import {Component, inject, NgZone, OnInit} from '@angular/core';
 // Todos components.
 import {MatProgressSpinner, MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {AddTodoComponent, SearchTodoInputComponent, TodoListComponent, TodosService} from "../../index";
+import {AddTodoComponent, SearchTodoInputComponent, TodoListComponent} from "../../components";
+import {TodosService} from "../../services";
 
 @Component({
   selector: 'app-todos-page',

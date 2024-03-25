@@ -25,7 +25,7 @@ import {provideNativeDateAdapter} from '@angular/material/core';
           [formControlName]="formControlNameD"
           [matDatepicker]="picker"
           [ngClass]="{
-        'focus:ring-red-500 ring-offset-red-500 border-red-500':
+        'focus:ring-red-500 focus:ring-offset-red-500 border-red-500':
          getFormControl(formControlNameD)?.invalid &&
         (getFormControl(formControlNameD)?.touched || getFormControl(formControlNameD)?.dirty)
       }"

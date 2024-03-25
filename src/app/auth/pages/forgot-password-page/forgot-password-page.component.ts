@@ -4,6 +4,7 @@ import {NgIcon} from "@ng-icons/core";
 import {AuthTitleComponent} from "../../components";
 import AuthLayoutPageComponent from "../auth-layout-page/auth-layout-page.component";
 import type {ForgotPasswordForm} from "../../models";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-forgot-password-page',
@@ -12,7 +13,8 @@ import type {ForgotPasswordForm} from "../../models";
     ReactiveFormsModule,
     AuthLayoutPageComponent,
     AuthTitleComponent,
-    NgIcon
+    NgIcon,
+    NgClass
   ],
   templateUrl: './forgot-password-page.component.html',
   styles: ``

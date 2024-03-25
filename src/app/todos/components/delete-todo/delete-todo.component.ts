@@ -3,7 +3,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {take} from "rxjs";
 import {NgIcon} from "@ng-icons/core";
 // Services.
-import {DeleteTodoDialogComponent, TodosService} from "../../../todos";
+import {TodosService} from "../../services";
+import {DeleteTodoDialogComponent} from "../../ui";
 
 @Component({
   selector: 'app-delete-todo',
