@@ -1,5 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ComponentType} from "@angular/cdk/overlay";
 
 @Injectable({
   providedIn: 'root'
@@ -25,4 +26,13 @@ export class SnackBarService {
       duration: 3000,
     })
   }
+
+  public showSnackBarFromComponent(component: ComponentType<unknown>) {
+    this._snackBar.openFromComponent(component, {
+      horizontalPosition: "center",
+      verticalPosition: "bottom",
+      duration: 10000,
+    });
+  }
+
 }

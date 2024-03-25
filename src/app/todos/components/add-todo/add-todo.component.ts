@@ -5,7 +5,8 @@ import {MatDialog} from "@angular/material/dialog";
 // Shared.
 import {DatepickerComponent} from "../../../shared";
 // Services.
-import {TodosService, AddTodoDialogComponent} from "../../../todos";
+import {TodosService} from "../../services";
+import {AddTodoDialogComponent} from "../../ui";
 
 
 @Component({

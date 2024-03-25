@@ -1,5 +1,5 @@
 <!--Head-->
-<h3 mat-dialog-title class="text-lg font-normal">
+<h3 class="text-lg font-normal" mat-dialog-title>
   Add a new <span class="text-pink-400">toDo</span>.
 </h3>
 
@@ -9,8 +9,8 @@
   <!--Close left top button-->
   <button
     (click)="onCancel()"
-    type="button"
     class="absolute top-3 end-2.5 bg-transparent text-pink-100 hover:bg-pink-100 hover:text-gray-900 hover:rotate-90 rounded-lg w-8 h-8 inline-flex justify-center items-center on-focus transition-all"
+    type="button"
   >
 
     <ng-icon
@@ -27,15 +27,15 @@
     <div class="mb-5 text-pink-100 flex flex-col gap-1">
       <label for="title">Title</label>
       <input
-        id="title"
-        type="text"
-        class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 px-3.5 text-sm -tracking-tighter on-focus"
         [ngClass]="{
-        'focus:ring-red-500 ring-offset-red-500 border-red-500': addTodoForm.get('title')?.invalid &&
+        'focus:ring-red-500 focus:ring-offset-red-500 border-red-500': addTodoForm.get('title')?.invalid &&
       (addTodoForm.get('title')?.touched || addTodoForm.get('title')?.dirty)
       }"
+        class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 px-3.5 text-sm -tracking-tighter on-focus"
         formControlName="title"
+        id="title"
         placeholder="Ex. Feed the cats."
+        type="text"
       >
       @if (addTodoForm.get('title')?.invalid &&
       (addTodoForm.get('title')?.touched || addTodoForm.get('title')?.dirty)) {
@@ -53,19 +53,19 @@
   <div class="px-3">
     <!--Agree button-->
     <button
+      (click)="onAgreeResults()"
       [disabled]="addTodoForm.invalid"
       [ngClass]="addTodoForm.invalid ? 'bg-pink-400' : 'bg-pink-600 hover:bg-pink-500 on-focus'"
-      (click)="onAgreeResults()"
-      type="button"
-      class="font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center transition-all">
+      class="font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center transition-all"
+      type="button">
       Add toDo
     </button>
 
     <!--Cancel button-->
     <button
       (click)="onCancel()"
-      type="button"
-      class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 bg-pink-100 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-pink-500 focus:z-10 on-focus transition-all">
+      class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 bg-pink-100 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-pink-500 focus:z-10 on-focus transition-all"
+      type="button">
       No, cancel
     </button>
   </div>

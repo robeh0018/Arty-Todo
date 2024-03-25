@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
 import {FirestoreTodosService, TodosService} from "./todos";
+import {FirebaseAuthService} from "./auth";
 
 export const routes: Routes = [
 
@@ -18,6 +19,7 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
+    providers: [FirebaseAuthService],
     // Auth routes
     loadChildren: () => import('./auth/auth.routes')
   },

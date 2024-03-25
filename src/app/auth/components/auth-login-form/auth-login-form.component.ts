@@ -2,7 +2,9 @@ import {Component, inject} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
 import {RouterLink} from "@angular/router";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import type {LoginForm} from "../../models";
+import type {LoginFormTypes} from "../../models";
+import {AuthService} from "../../services";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-auth-login-form',
@@ -10,7 +12,8 @@ import type {LoginForm} from "../../models";
   imports: [
     NgIcon,
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgClass
   ],
   templateUrl: './auth-login-form.component.html',
   styles: ``
@@ -18,14 +21,15 @@ import type {LoginForm} from "../../models";
 export class AuthLoginFormComponent {
 
   private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
 
-  public loginForm: FormGroup<LoginForm>;
+  public loginForm: FormGroup<LoginFormTypes>;
 
   constructor() {
     this.loginForm = this.initForm();
   }
 
-  private initForm(): FormGroup<LoginForm> {
+  private initForm(): FormGroup<LoginFormTypes> {
     return this.fb.group({
       email: ['', [
         Validators.required,
@@ -39,7 +43,11 @@ export class AuthLoginFormComponent {
     })
   }
 
-  public onSubmit(): void {
-    console.log(this.loginForm.value)
+  public async onSubmit(): Promise<void> {
+
+    const {email, password} = this.loginForm.value;
+
+    // Here the values never will be null with form validations.
+    await this.authService.loginWithEmailAndPassword(email!, password!);
   }
 }
