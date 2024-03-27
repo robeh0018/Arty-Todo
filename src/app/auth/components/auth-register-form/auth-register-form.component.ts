@@ -1,10 +1,11 @@
 import {Component, inject} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
 import {RouterLink} from "@angular/router";
+import {NgClass} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../services";
 import type {RegisterFormTypes} from "../../models";
-import {NgClass} from "@angular/common";
+import {AppLoadingService} from "../../../services";
 
 @Component({
   selector: 'app-auth-register-form',
@@ -21,6 +22,7 @@ import {NgClass} from "@angular/common";
 export class AuthRegisterFormComponent {
 
   public registerForm: FormGroup<RegisterFormTypes>;
+  public appLoadingService = inject(AppLoadingService);
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
 
@@ -31,6 +33,8 @@ export class AuthRegisterFormComponent {
   public async onSubmit() {
     const {email, password, userName, fullName} = this.registerForm.value;
 
+    this.appLoadingService.setIsLoading(true);
+
     // Here the values never will be null with form validations.
     await this.authService.signUpWithEmailAndPassword(
       {
@@ -40,6 +44,8 @@ export class AuthRegisterFormComponent {
         password: password!
       }
     )
+
+    this.appLoadingService.setIsLoading(false);
   };
 
   private initForm(): FormGroup<RegisterFormTypes> {

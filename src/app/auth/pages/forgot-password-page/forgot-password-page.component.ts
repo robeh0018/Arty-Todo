@@ -5,6 +5,7 @@ import {AuthTitleComponent} from "../../components";
 import AuthLayoutPageComponent from "../auth-layout-page/auth-layout-page.component";
 import type {ForgotPasswordForm} from "../../models";
 import {NgClass} from "@angular/common";
+import {AppLoadingService} from "../../../services";
 
 @Component({
   selector: 'app-forgot-password-page',
@@ -20,22 +21,25 @@ import {NgClass} from "@angular/common";
   styles: ``
 })
 export default class ForgotPasswordPageComponent {
+  public forgotPasswordForm: FormGroup<ForgotPasswordForm>;
+  public appLoadingService = inject(AppLoadingService);
   private fb = inject(FormBuilder);
-
-  forgotPasswordForm: FormGroup<ForgotPasswordForm>;
 
   constructor() {
     this.forgotPasswordForm = this.initForm();
   }
 
+  public onSubmit() {
+    this.appLoadingService.setIsLoading(true);
+
+    console.log(this.forgotPasswordForm.value)
+
+    this.appLoadingService.setIsLoading(false);
+  }
 
   private initForm(): FormGroup<ForgotPasswordForm> {
     return this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     })
-  }
-
-  public onSubmit() {
-    console.log(this.forgotPasswordForm.value)
   }
 }

@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import type {LoginFormTypes} from "../../models";
 import {AuthService} from "../../services";
 import {NgClass} from "@angular/common";
+import {AppLoadingService} from "../../../services";
 
 @Component({
   selector: 'app-auth-login-form',
@@ -20,13 +21,25 @@ import {NgClass} from "@angular/common";
 })
 export class AuthLoginFormComponent {
 
+  public loginForm: FormGroup<LoginFormTypes>;
+  public appLoadingService = inject(AppLoadingService);
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
 
-  public loginForm: FormGroup<LoginFormTypes>;
-
   constructor() {
     this.loginForm = this.initForm();
+  }
+
+  public async onSubmit(): Promise<void> {
+
+    const {email, password} = this.loginForm.value;
+
+    this.appLoadingService.setIsLoading(true);
+
+    // Here the values never will be null with form validations.
+    await this.authService.loginWithEmailAndPassword(email!, password!);
+
+    this.appLoadingService.setIsLoading(false);
   }
 
   private initForm(): FormGroup<LoginFormTypes> {
@@ -41,13 +54,5 @@ export class AuthLoginFormComponent {
         Validators.minLength(6)]
       ]
     })
-  }
-
-  public async onSubmit(): Promise<void> {
-
-    const {email, password} = this.loginForm.value;
-
-    // Here the values never will be null with form validations.
-    await this.authService.loginWithEmailAndPassword(email!, password!);
   }
 }
