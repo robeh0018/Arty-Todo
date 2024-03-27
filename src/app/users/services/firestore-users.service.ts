@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {doc, getDoc, setDoc} from "firebase/firestore";
 import {FirebaseDb} from "../../firebase.config";
-import type {LoggedUser} from "../models";
+import {User} from "../models";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreUsersService {
 
-  public async addUser(user: LoggedUser): Promise<void> {
+  public async addUser(user: User): Promise<void> {
     try {
       const {uid, ...rest} = user;
 
@@ -21,7 +21,7 @@ export class FirestoreUsersService {
     }
   }
 
-  public async loadUserData(userId: string): Promise<LoggedUser | undefined> {
+  public async loadUserData(userId: string): Promise<User | undefined> {
 
     try {
       const docRef = doc(FirebaseDb, 'users', userId);
@@ -33,7 +33,7 @@ export class FirestoreUsersService {
       return {
         uid: userId,
         ...user.data()
-      } as LoggedUser;
+      } as User;
 
     } catch (e) {
       console.log(e);

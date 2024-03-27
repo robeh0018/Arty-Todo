@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from "@angular/router";
-import {NavBarComponent} from "../../../shared";
+import {NavBarComponent} from "../../shared";
 
 @Component({
   standalone: true,
@@ -21,6 +21,6 @@ import {NavBarComponent} from "../../../shared";
   `,
   styles: ``
 })
-export default class TodosLayoutPageComponent {
+export default class AppLayoutComponent {
 
 }

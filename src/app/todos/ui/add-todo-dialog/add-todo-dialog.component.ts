@@ -40,15 +40,6 @@ export class AddTodoDialogComponent {
     this.addTodoForm = this.initForm();
   }
 
-  private initForm(): FormGroup<AddTodoForm> {
-    return this.fb.group({
-      title: ['', Validators.required],
-      dueDate: [
-        new Date().toISOString(), Validators.required,
-      ]
-    })
-  }
-
   onCancel() {
 
     this.dialogRef.close();
@@ -57,6 +48,15 @@ export class AddTodoDialogComponent {
   onAgreeResults() {
 
     this.dialogRef.close(this.addTodoForm.value);
+  }
+
+  private initForm(): FormGroup<AddTodoForm> {
+    return this.fb.group({
+      title: ['', Validators.required],
+      dueDate: [
+        new Date().toISOString(), Validators.required,
+      ]
+    })
   }
 
 

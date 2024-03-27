@@ -30,9 +30,9 @@ export class NavBarComponent {
         href: '/todos'
       },
       {
-        title: 'Authentication',
+        title: 'Profile',
         iconName: `bootstrapPerson`,
-        href: '/auth'
+        href: '/users/user-profile'
       },
 
     ]

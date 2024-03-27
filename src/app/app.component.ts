@@ -18,7 +18,9 @@ import {
   bootstrapPersonHeart,
   bootstrapPlus,
   bootstrapSearch,
-  bootstrapTrash
+  bootstrapTrash,
+  bootstrapArrowBarLeft
+
 } from '@ng-icons/bootstrap-icons';
 
 @Component({
@@ -43,7 +45,8 @@ import {
       bootstrapFacebook,
       bootstrapGithub,
       bootstrapPersonHeart,
-      bootstrapPersonCheck
+      bootstrapPersonCheck,
+      bootstrapArrowBarLeft
     })
   ],
 })

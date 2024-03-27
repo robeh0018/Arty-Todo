@@ -1,0 +1,42 @@
+<section class="flex flex-col md:flex-row gap-5 w-full sm:w-[600px] p-1 sm:p-5 m-auto">
+
+  <!--  image-->
+  <div class="rounded-3xl border border-pink-400 h-64 w-full sm:w-80 md:w-52 flex m-auto shadow-md shadow-pink-300">
+
+    <ng-icon
+      class="m-auto text-pink"
+      name="bootstrapPerson"
+      size="150px"/>
+
+  </div>
+
+  <!--  Info-->
+  <div class="py-2  space-y-3 tracking-wide">
+    <h3 class="text-5xl">Profile info:</h3>
+
+    <div class="flex flex-col">
+      <span class="font-bold">Email address</span>
+      <span>adressgoogle.com</span>
+    </div>
+
+    <div class="flex flex-col">
+      <span class="font-bold">User Name</span>
+      <span>arteezy</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-bold">Full Name</span>
+      <span>Roberto M Padilla Garcia</span>
+    </div>
+
+    <button
+      (click)="handleSignOut()"
+      class="border border-pink-100 rounded-xl py-2 px-4 hover:bg-neutral-800 flex items-center gap-1 on-focus transition-all">
+      <ng-icon class="text-red-400" name="bootstrapArrowBarLeft"/>
+      Log out
+    </button>
+  </div>
+
+
+</section>
+
+

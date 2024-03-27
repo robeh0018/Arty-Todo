@@ -8,9 +8,6 @@ import {FirestoreTodosService} from "./firestore-todos.service";
 export class TodosService {
   private todos: WritableSignal<Todo[]> = signal<Todo[]>([]);
   private searchedTodos: WritableSignal<Todo[]> = signal<Todo[]>([]);
-  // Firestore db service
-  private firestoreTodosService = inject(FirestoreTodosService);
-
   public notCompletedTodos: Signal<Todo[]> = computed(
     () => {
 
@@ -21,7 +18,6 @@ export class TodosService {
       return this.todos().filter(todo => !todo.completed);
     }
   );
-
   public completedTodos: Signal<Todo[]> = computed(
     () => {
 
@@ -32,8 +28,9 @@ export class TodosService {
       return this.todos().filter(todo => todo.completed);
     }
   );
-
   public searchedTodosCount: Signal<number> = computed(() => this.searchedTodos().length);
+  // Firestore db service
+  private firestoreTodosService = inject(FirestoreTodosService);
 
   public async loadTodosData() {
     const todos = await this.firestoreTodosService.getAllTodos();

@@ -36,8 +36,6 @@ export class FirestoreTodosService {
         );
       })
 
-      this.snackBarService.showSuccessSnackBar('Todos loaded');
-
       return todos;
     } catch (e) {
 
