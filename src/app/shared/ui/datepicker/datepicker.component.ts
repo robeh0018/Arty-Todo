@@ -49,7 +49,7 @@ import {provideNativeDateAdapter} from '@angular/material/core';
       </div>
 
       <mat-datepicker-toggle class="h-5 w-5" [for]="picker">
-        <mat-datepicker #picker></mat-datepicker>
+        <mat-datepicker #picker panelClass="bg-neutral-900"></mat-datepicker>
       </mat-datepicker-toggle>
 
     </form>

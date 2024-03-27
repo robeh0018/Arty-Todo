@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "firebase/auth";
 import {FirebaseAuth} from "../../firebase.config";
-import {handlingFirebaseAuthErrors} from "../helpers";
+import {FirebaseAuthResponse, handlingFirebaseAuthErrors} from "../helpers";
+import {FirebaseAuthUser} from "../models";
 
 @Injectable({
   providedIn: "root"
@@ -13,41 +14,62 @@ export class FirebaseAuthService {
     try {
 
       // Authenticate the user.
-      const userCredentials = await createUserWithEmailAndPassword(FirebaseAuth, email, password);
+      const {user} = await createUserWithEmailAndPassword(FirebaseAuth, email, password);
 
-      return {
-        success: true,
-        payload: userCredentials.user.uid
-      };
+      const {metadata, uid, phoneNumber, emailVerified, photoURL} = user;
+
+      const firebaseAuthUserData: FirebaseAuthUser = {
+        uid,
+        photoURL,
+        emailVerified,
+        phoneNumber,
+        creationTime: metadata.creationTime,
+        lastSignInTime: metadata.lastSignInTime,
+      }
+
+      return FirebaseAuthResponse.success(firebaseAuthUserData);
 
     } catch (e: any) {
-      console.log(e.message)
-      console.log(e.code)
 
-      return {
-        success: false,
-        payload: handlingFirebaseAuthErrors(e.code)
-      };
+      console.log(e?.code)
+
+      return FirebaseAuthResponse.fail(handlingFirebaseAuthErrors(e.code))
     }
   }
 
 
   public async onSignInWithEmailAndPassword(email: string, password: string) {
     try {
-      const userCredentials = await signInWithEmailAndPassword(FirebaseAuth, email, password);
+      const {user} = await signInWithEmailAndPassword(FirebaseAuth, email, password);
 
-      return {
-        success: true,
-        payload: userCredentials.user.uid
-      };
+      const {metadata, uid, phoneNumber, emailVerified, photoURL} = user;
+
+      const firebaseAuthUserData: FirebaseAuthUser = {
+        uid,
+        photoURL,
+        emailVerified,
+        phoneNumber,
+        creationTime: metadata.creationTime,
+        lastSignInTime: metadata.lastSignInTime,
+      }
+
+      return FirebaseAuthResponse.success(firebaseAuthUserData);
+
     } catch (e: any) {
 
       console.log({msg: e.code});
 
-      return {
-        success: false,
-        payload: handlingFirebaseAuthErrors(e.code)
-      };
+      return FirebaseAuthResponse.fail(handlingFirebaseAuthErrors(e.code))
+    }
+  };
+
+  public async onSignOut(): Promise<void> {
+    try {
+
+      await signOut(FirebaseAuth);
+    } catch (e) {
+
+      console.log({e});
     }
   }
 

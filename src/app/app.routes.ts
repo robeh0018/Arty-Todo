@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {FirestoreTodosService, TodosService} from "./todos";
-import {FirebaseAuthService} from "./auth";
+import {authGuard} from "./auth";
 
 export const routes: Routes = [
 
@@ -13,20 +13,32 @@ export const routes: Routes = [
     path: '',
     providers: [FirestoreTodosService, TodosService],
     // Todos layout.
-    loadComponent: () => import('./todos/pages/todos-layout-page/todos-layout-page.component'),
+    loadComponent: () => import('./layout/app-layout/app-layout.component'),
     // Todos routes.
     loadChildren: () => import('./todos/todos.routes')
   },
   {
     path: 'auth',
-    providers: [FirebaseAuthService],
     // Auth routes
     loadChildren: () => import('./auth/auth.routes')
   },
-
   {
-    path: '*',
-    redirectTo: '/auth',
+    path: 'users',
+    // Auth routes
+    canActivate: [authGuard],
+    loadComponent: () => import('./layout/app-layout/app-layout.component'),
+    loadChildren: () => import('./users/users.routes')
+  },
+  {
+    path: 'not-found',
+    title: 'Page 404',
+    loadComponent: () => import('./shared/components/page-404/page-404.component'),
+  },
+
+  // Make a 404 page.
+  {
+    path: '**',
+    redirectTo: '/not-found',
     pathMatch: 'full',
   },
 ];

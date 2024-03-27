@@ -44,7 +44,7 @@ import {AuthService} from "../../services";
 })
 export class AuthErrorMessageComponent {
   public snackBarRef = inject(MatSnackBarRef);
-  public errorMessage: WritableSignal<string | undefined>;
+  public errorMessage: WritableSignal<string | null>;
 
   private authService = inject(AuthService);
 
@@ -54,7 +54,7 @@ export class AuthErrorMessageComponent {
     this.snackBarRef.afterDismissed()
       .pipe(take(1))
       .subscribe(() => {
-        this.authService.setAuthError(undefined);
+        this.authService.setAuthError(null);
       })
   }
 }
