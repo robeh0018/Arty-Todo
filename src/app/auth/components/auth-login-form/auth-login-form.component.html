@@ -63,8 +63,8 @@
   </div>
 
   <button
-    [disabled]="loginForm.invalid"
-    [ngClass]="loginForm.invalid ? 'bg-pink-400' : 'bg-pink-600 hover:bg-pink-500 on-focus'"
+    [disabled]="loginForm.invalid || appLoadingService.getIsLoading()()"
+    [ngClass]="loginForm.invalid || appLoadingService.getIsLoading()() ? 'bg-pink-400' : 'bg-pink-600 hover:bg-pink-500 on-focus'"
     class="font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all"
     type="submit">
     Sign in

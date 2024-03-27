@@ -1,5 +1,14 @@
-<div mat-ripple
-     matRippleColor="#f9a8d4" [matRippleRadius]="10">
+<div
+  [matRippleRadius]="10"
+  class="h-screen"
+  mat-ripple matRippleColor="#f9a8d4">
+
+  <!-- Loading progress bar-->
+  @if (appLoadingService.getIsLoading()()) {
+    <div class="fixed top-0 w-full">
+      <mat-progress-bar mode="indeterminate"/>
+    </div>
+  }
 
   <router-outlet/>
 </div>

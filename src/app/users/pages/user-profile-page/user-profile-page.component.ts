@@ -1,6 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
 import {AuthService} from "../../../auth";
+import {AppLoadingService} from "../../../services";
 
 
 @Component({
@@ -14,9 +15,15 @@ import {AuthService} from "../../../auth";
 })
 export default class UserProfilePageComponent {
 
+  public appLoadingService = inject(AppLoadingService);
   private authService = inject(AuthService);
 
   public async handleSignOut() {
-    await this.authService.signUp()
+
+    this.appLoadingService.setIsLoading(true);
+
+    await this.authService.signUp();
+
+    this.appLoadingService.setIsLoading(false);
   }
 }
