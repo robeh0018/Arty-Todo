@@ -13,7 +13,7 @@ import {formatDatesForUI} from "../../../helpers";
   ],
   template: `
     <li
-      class="px-2 flex justify-between items-center rounded hover:bg-pink-500 cursor-move transition-all w-full"
+      class="px-2 flex justify-between items-center rounded hover:bg-pink-500 cursor-move transition-all w-full relative"
     >
       <!--Icon and Title-->
       <div class="-tracking-tight flex items-center">
@@ -24,7 +24,7 @@ import {formatDatesForUI} from "../../../helpers";
           <ng-icon name="bootstrapCheckCircle"></ng-icon>
         }
 
-        <span class="ms-3"> {{ todo.title }}</span>
+        <p class="ms-3 max-w-[300px] truncate"> {{ todo.title }}</p>
       </div>
 
       <div>

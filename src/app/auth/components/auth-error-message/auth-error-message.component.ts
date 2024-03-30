@@ -1,9 +1,9 @@
-import {Component, inject, WritableSignal} from '@angular/core';
+import {Component, inject, Signal} from '@angular/core';
 import {MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef} from "@angular/material/snack-bar";
 import {take} from "rxjs";
 import {NgIcon, provideIcons} from "@ng-icons/core";
 import {bootstrapX} from "@ng-icons/bootstrap-icons";
-import {AuthService} from "../../services";
+import {AuthStoreService} from "../../services";
 
 @Component({
   selector: 'app-auth-error-message',
@@ -44,17 +44,17 @@ import {AuthService} from "../../services";
 })
 export class AuthErrorMessageComponent {
   public snackBarRef = inject(MatSnackBarRef);
-  public errorMessage: WritableSignal<string | null>;
+  public errorMessage: Signal<string | null>;
 
-  private authService = inject(AuthService);
+  private authStoreService = inject(AuthStoreService);
 
   constructor() {
-    this.errorMessage = this.authService.getAuthError();
+    this.errorMessage = this.authStoreService.getAuthError();
 
     this.snackBarRef.afterDismissed()
       .pipe(take(1))
       .subscribe(() => {
-        this.authService.setAuthError(null);
+        this.authStoreService.setAuthError(null);
       })
   }
 }

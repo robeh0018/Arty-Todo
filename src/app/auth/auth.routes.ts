@@ -21,6 +21,11 @@ const authRoutes: Routes = [
     title: 'Forgot Password',
     loadComponent: () => import('./pages/forgot-password-page/forgot-password-page.component'),
   },
+  {
+    path: 'new-password',
+    title: 'New Password',
+    loadComponent: () => import('./pages/new-password-page/new-password-page.component'),
+  },
 ]
 
 export default authRoutes;

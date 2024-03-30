@@ -10,7 +10,6 @@ export class SnackBarService {
   //  Mat SnackBar service.
   private _snackBar: MatSnackBar = inject(MatSnackBar);
 
-
   public showSuccessSnackBar(message?: string) {
     this._snackBar.open(`${message ? message : 'Action'} successfully!`, 'dismiss', {
       horizontalPosition: "center",
@@ -31,7 +30,7 @@ export class SnackBarService {
     this._snackBar.openFromComponent(component, {
       horizontalPosition: "center",
       verticalPosition: "bottom",
-      duration: 10000,
+      duration: 5000,
     });
   }
 

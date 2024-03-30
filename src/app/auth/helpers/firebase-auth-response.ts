@@ -1,8 +1,17 @@
 import {FirebaseAuthUser} from "../models";
 
-export class FirebaseAuthResponse {
+export class FirebaseAuthResponse<T> {
 
-  public static success(payload: FirebaseAuthUser) {
+  public static successWithUserAsPayload(payload: FirebaseAuthUser) {
+
+    return {
+      success: true,
+      payload,
+      error: null,
+    }
+  }
+
+  public static successWithMessageAsPayload(payload: string) {
 
     return {
       success: true,
