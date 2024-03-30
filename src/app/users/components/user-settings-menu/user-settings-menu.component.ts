@@ -1,33 +1,40 @@
 import {Component, inject, Signal} from '@angular/core';
+import {MatMenuModule} from "@angular/material/menu";
 import {NgIcon} from "@ng-icons/core";
-import {NgOptimizedImage} from "@angular/common";
+import {User} from "../../models";
+import {NgClass} from "@angular/common";
+import {RouterLink} from "@angular/router";
+import {MatDivider} from "@angular/material/divider";
 import {AuthService, AuthStoreService} from "../../../auth";
 import {AppLoadingService} from "../../../services";
-import {User} from "../../models";
-
 
 @Component({
-  selector: 'app-user-profile-page',
+  selector: 'app-user-settings-menu',
   standalone: true,
   imports: [
+    MatMenuModule,
     NgIcon,
-    NgOptimizedImage
+    NgClass,
+    RouterLink,
+    MatDivider
   ],
-  templateUrl: './user-profile-page.component.html',
-  styles: ``
+  templateUrl: './user-settings-menu.component.html',
+  styles: `
+  `
 })
-export default class UserProfilePageComponent {
+export class UserSettingsMenuComponent {
+
   public currentUser: Signal<User | null>;
-  public appLoadingService = inject(AppLoadingService);
-  private authService = inject(AuthService);
+
   private authStoreService = inject(AuthStoreService);
+  private authService = inject(AuthService);
+  private appLoadingService = inject(AppLoadingService);
 
   constructor() {
     this.currentUser = this.authStoreService.getLoggedUser();
   }
 
-  public async handleSignOut() {
-
+  async handleSignOut() {
     this.appLoadingService.setIsLoading(true);
 
     await this.authService.authSignOut();

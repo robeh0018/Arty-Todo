@@ -1,0 +1,67 @@
+<a
+  [matMenuTriggerFor]="menu"
+  aria-label="User settings"
+  class="flex flex-col items-center gap-1">
+  <ng-icon class="text-xl" name="bootstrapGear"/>
+  <span class="text-xs">Settings</span>
+</a>
+<mat-menu #menu="matMenu" class="bg-neutral-900">
+  <div class="bg-neutral-900 h-fit">
+
+    <!--My profile-->
+    <button
+      class="flex gap-2 items-center"
+      mat-menu-item
+      routerLink="/users/user-profile">
+      <ng-icon
+        class="text-xl hover:text-pink-300"
+        matMenuItemIcon
+        name="bootstrapPerson"
+      />
+      <span class="text-sm">My profile</span>
+    </button>
+
+    <!--Verify email.-->
+    <button class="flex gap-2 items-center" mat-menu-item>
+      <ng-icon
+        [name]="currentUser()?.emailVerified ? 'bootstrapEnvelopeCheck' : 'bootstrapEnvelopeX'"
+        [ngClass]="currentUser()?.emailVerified ? 'text-green-400' : 'text-red-400'"
+        class="text-xl"
+        matMenuItemIcon
+      />
+      <span class="text-sm">Verify email</span>
+    </button>
+
+    <!--Update password-->
+    <button
+      class="flex gap-2 items-center"
+      mat-menu-item
+      routerLink="/users/new-password"
+    >
+      <ng-icon
+        class="text-xl hover:text-pink-300"
+        matMenuItemIcon
+        name="bootstrapKey"
+      />
+      <span class="text-sm">Update Password</span>
+    </button>
+
+    <mat-divider class="bg-black h-0.5"/>
+
+    <!--Log out-->
+    <button
+      (click)="handleSignOut()"
+      class="flex gap-2 items-center"
+      mat-menu-item
+    >
+      <ng-icon
+        class="text-xl text-red-400"
+        matMenuItemIcon
+        name="bootstrapArrowBarLeft"
+      />
+      <span class="text-sm">Log out</span>
+    </button>
+
+  </div>
+</mat-menu>
+

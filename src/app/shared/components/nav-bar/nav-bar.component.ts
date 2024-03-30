@@ -3,6 +3,7 @@ import {NgIcon} from "@ng-icons/core";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {MatRipple} from "@angular/material/core";
 import {SmileEmojiComponent} from "../smile-emoji/smile-emoji.component";
+import {UserSettingsMenuComponent} from "../../../users";
 
 @Component({
   selector: 'app-nav-bar',
@@ -13,29 +14,14 @@ import {SmileEmojiComponent} from "../smile-emoji/smile-emoji.component";
     RouterLinkActive,
     MatRipple,
     SmileEmojiComponent,
+    UserSettingsMenuComponent,
   ],
   templateUrl: './nav-bar.component.html',
   styles: ``
 })
 export class NavBarComponent {
 
-  public navListItems!: { title: string; iconName: string; href: string }[];
-
   constructor() {
-
-    this.navListItems = [
-      {
-        title: 'Todos',
-        iconName: `bootstrapListTask`,
-        href: '/todos'
-      },
-      {
-        title: 'Profile',
-        iconName: `bootstrapPerson`,
-        href: '/users/user-profile'
-      },
-
-    ]
   }
 
 }

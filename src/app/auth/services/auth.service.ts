@@ -195,8 +195,6 @@ export class AuthService {
     if (!success && error) return this.handleFailedAuthentication(error);
 
     if (success && payload) this.snackBarService.showSuccessSnackBar(payload);
-
-    await this.router.navigate(['/todos']);
   }
 
   private handleSuccessAuthentication(userData: User) {

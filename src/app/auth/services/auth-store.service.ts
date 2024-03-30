@@ -1,4 +1,4 @@
-import {Injectable, signal, WritableSignal} from '@angular/core';
+import {effect, Injectable, signal, WritableSignal} from '@angular/core';
 import {User} from "../../users";
 
 @Injectable({
@@ -10,22 +10,36 @@ export class AuthStoreService {
   private authError: WritableSignal<string | null> = signal<string | null>(null);
 
   constructor() {
+    // this.syncUserDataWithLocalStorageEffect();
   }
 
-  getLoggedUser() {
+  public getLoggedUser() {
+    // const currentUser = JSON.parse(localStorage.getItem('currentUser')!) as User | null;
+    //
+    // if (!currentUser) {
+    //   this.setLoggedUser(currentUser);
+    // }
+
     return this.loggedUser.asReadonly();
   }
 
-  setLoggedUser(user: User | null) {
+  public setLoggedUser(user: User | null) {
     this.loggedUser.set(user);
   }
 
-  getAuthError() {
+  public getAuthError() {
     return this.authError.asReadonly();
   }
 
-  setAuthError(errorMessage: string | null) {
+  public setAuthError(errorMessage: string | null) {
     this.authError.set(errorMessage);
   }
+
+  // private syncUserDataWithLocalStorageEffect() {
+  //   effect(() => {
+  //     localStorage.setItem('currentUser', JSON.stringify(this.getLoggedUser()()));
+  //   })
+  // }
+
 
 }

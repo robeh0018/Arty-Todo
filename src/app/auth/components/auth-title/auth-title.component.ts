@@ -21,8 +21,12 @@ import {SmileEmojiComponent} from "../../../shared";
         {{ subtitle }}
       </p>
 
-      <app-smile-emoji class="mt-1"/>
+      <!--Emoji-->
+      @if (showEmoji) {
+        <app-smile-emoji class="mt-1"/>
+      }
 
+      <!-- Other text-->
       @if (otherText) {
         <p class="mt-1">{{ otherText }}</p>
       }
@@ -35,4 +39,5 @@ export class AuthTitleComponent {
   @Input({required: true}) title!: string;
   @Input({required: true}) subtitle!: string;
   @Input() otherText: string | undefined;
+  @Input() showEmoji: boolean = true;
 }
