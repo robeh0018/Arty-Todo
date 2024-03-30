@@ -4,16 +4,19 @@
   <!--  Not Completed todos list.-->
 
   <!--Head Section-->
-  <app-todo-list-head-section title="ToDos" [itemsQuantity]="notCompletedTodos().length"/>
+  <app-todo-list-head-section
+    [itemsQuantity]="notCompletedTodos().length"
+    title="ToDos"
+  />
 
   <!-- Divider-->
   <div class="h-0.5 bg-black bg-opacity-20 my-2 rounded"></div>
 
   <!-- List-->
   <ul
-    cdkDropList
-    [cdkDropListData]="notCompletedTodos()"
     (cdkDropListDropped)="drop($event)"
+    [cdkDropListData]="notCompletedTodos()"
+    cdkDropList
     class="flex flex-col gap-3"
   >
     @for (todo of notCompletedTodos(); track todo.id) {
@@ -37,16 +40,16 @@
   <!--  Completed todos list-->
 
   <!--Head Section-->
-  <app-todo-list-head-section title="Completed" [itemsQuantity]="completedTodos().length"/>
+  <app-todo-list-head-section [itemsQuantity]="completedTodos().length" title="Completed"/>
 
   <!--Divider-->
   <div class="h-0.5 bg-black bg-opacity-20 my-2 rounded"></div>
 
   <!--List-->
   <ul
-    cdkDropList
-    [cdkDropListData]="completedTodos()"
     (cdkDropListDropped)="drop($event)"
+    [cdkDropListData]="completedTodos()"
+    cdkDropList
     class="flex flex-col gap-3"
   >
     @for (todo of completedTodos(); track todo.id) {

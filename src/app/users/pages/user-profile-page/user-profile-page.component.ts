@@ -22,7 +22,7 @@ export default class UserProfilePageComponent {
 
     this.appLoadingService.setIsLoading(true);
 
-    await this.authService.signUp();
+    await this.authService.authSignOut();
 
     this.appLoadingService.setIsLoading(false);
   }

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {doc, getDoc, setDoc} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, query, setDoc, where} from "firebase/firestore";
 import {FirebaseDb} from "../../firebase.config";
 import {User} from "../models";
 
@@ -21,7 +21,7 @@ export class FirestoreUsersService {
     }
   }
 
-  public async loadUserData(userId: string): Promise<User | undefined> {
+  public async getUserById(userId: string): Promise<User | undefined> {
 
     try {
       const docRef = doc(FirebaseDb, 'users', userId);
@@ -42,5 +42,34 @@ export class FirestoreUsersService {
     }
   }
 
+  public async getUsersByEmail(email: string) {
+
+    try {
+      let users: User[] = [];
+
+      const q = query(collection(FirebaseDb, "users"), where("email", "==", email));
+
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+
+        users.push(
+          {
+            uid: doc.id,
+            ...doc.data()
+       } as User
+        );
+
+      })
+
+      return users;
+    } catch (e) {
+
+      console.log(e);
+
+      return [];
+    }
+
+  }
 
 }

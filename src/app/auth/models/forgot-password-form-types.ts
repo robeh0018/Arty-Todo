@@ -1,5 +1,5 @@
 import {FormControl} from "@angular/forms";
 
-export interface ForgotPasswordForm {
+export interface ForgotPasswordFormTypes {
   email: FormControl<string | null>;
 }

@@ -37,7 +37,7 @@ export class AuthLoginFormComponent {
     this.appLoadingService.setIsLoading(true);
 
     // Here the values never will be null with form validations.
-    await this.authService.loginWithEmailAndPassword(email!, password!);
+    await this.authService.authSignInWithEmailAndPassword(email!, password!);
 
     this.appLoadingService.setIsLoading(false);
   }
