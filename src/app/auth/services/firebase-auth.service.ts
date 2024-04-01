@@ -4,6 +4,7 @@ import {
   FacebookAuthProvider,
   GithubAuthProvider,
   GoogleAuthProvider,
+  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -21,7 +22,11 @@ import {FirebaseAuthUser} from "../models";
 })
 export class FirebaseAuthService {
 
-  public async onCreateUserWithEmailAndPassword(email: string, password: string) {
+  public async onCreateUserWithEmailAndPassword(email: string, password: string): Promise<{
+    success: boolean,
+    payload: FirebaseAuthUser | null,
+    error: string | null
+  }> {
 
     try {
 
@@ -41,7 +46,11 @@ export class FirebaseAuthService {
     }
   };
 
-  public async onSignInWithEmailAndPassword(email: string, password: string) {
+  public async onSignInWithEmailAndPassword(email: string, password: string): Promise<{
+    success: boolean,
+    payload: FirebaseAuthUser | null,
+    error: string | null
+  }> {
     try {
       const {user} = await signInWithEmailAndPassword(FirebaseAuth, email, password);
 
@@ -49,7 +58,6 @@ export class FirebaseAuthService {
       const firebaseAuthUserData = this.mapUserData(user);
 
       return FirebaseAuthResponse.successWithUserAsPayload(firebaseAuthUserData);
-
     } catch (e: any) {
 
       console.log(`Error on signIn with email and password ${e.code}`);
@@ -68,7 +76,11 @@ export class FirebaseAuthService {
     }
   }
 
-  public async onAuthWithGoogle() {
+  public async onAuthWithGoogle(): Promise<{
+    success: boolean,
+    payload: FirebaseAuthUser | null,
+    error: string | null
+  }> {
     const googleAuthProvider = new GoogleAuthProvider();
 
     try {
@@ -86,7 +98,11 @@ export class FirebaseAuthService {
     }
   }
 
-  public async onAuthWithGithub() {
+  public async onAuthWithGithub(): Promise<{
+    success: boolean,
+    payload: FirebaseAuthUser | null,
+    error: string | null
+  }> {
     const githubProvider = new GithubAuthProvider();
 
     try {
@@ -105,7 +121,11 @@ export class FirebaseAuthService {
     }
   };
 
-  public async onAuthWithFacebook() {
+  public async onAuthWithFacebook(): Promise<{
+    success: boolean,
+    payload: FirebaseAuthUser | null,
+    error: string | null
+  }> {
     try {
       const facebookProvider = new FacebookAuthProvider();
 
@@ -122,7 +142,11 @@ export class FirebaseAuthService {
     }
   }
 
-  public async onSendPasswordResetEmail(email: string) {
+  public async onSendPasswordResetEmail(email: string): Promise<{
+    success: boolean,
+    payload: string | null,
+    error: string | null
+  }> {
     try {
       await sendPasswordResetEmail(FirebaseAuth, email);
 
@@ -134,7 +158,32 @@ export class FirebaseAuthService {
     }
   }
 
-  public async onUpdateUserPassword(newPassword: string) {
+  public async onSendEmailVerification(): Promise<{
+    success: boolean,
+    payload: string | null,
+    error: string | null
+  }> {
+    try {
+      const firebaseCurrentUser = FirebaseAuth.currentUser;
+
+      if (!firebaseCurrentUser) return FirebaseAuthResponse.fail('Your session expires have to resign in, email verification');
+
+      await sendEmailVerification(firebaseCurrentUser);
+
+      return FirebaseAuthResponse.successWithMessageAsPayload(`Verification email was sent to ${firebaseCurrentUser.email}`);
+    } catch (e: any) {
+
+      console.log(`Error on send Email verification ${e.code}`);
+      return FirebaseAuthResponse.fail(e.code);
+    }
+
+  }
+
+  public async onUpdateUserPassword(newPassword: string): Promise<{
+    success: boolean,
+    payload: string | null,
+    error: string | null
+  }> {
     try {
       const currentUser = FirebaseAuth.currentUser;
 
@@ -152,6 +201,9 @@ export class FirebaseAuthService {
     }
   }
 
+  public getFirebaseUserAuthenticated() {
+    return FirebaseAuth.currentUser;
+  }
 
   private getProviders(providerData: UserInfo[]): string[] {
     return providerData.map(data => data.providerId);

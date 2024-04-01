@@ -23,7 +23,7 @@ export default class UserProfilePageComponent {
   private authStoreService = inject(AuthStoreService);
 
   constructor() {
-    this.currentUser = this.authStoreService.getLoggedUser();
+    this.currentUser = this.authStoreService.getCurrentUser();
   }
 
   public async handleSignOut() {

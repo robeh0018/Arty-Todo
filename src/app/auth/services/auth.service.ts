@@ -4,7 +4,7 @@ import {FirestoreUsersService, User} from "../../users";
 import {FirebaseAuthService} from "./firebase-auth.service";
 import {SnackBarService} from "../../services";
 import {AuthErrorMessageComponent} from "../components";
-import type {AuthUserRegistrationPayload} from "../models";
+import type {AuthUserRegistrationPayload, FirebaseAuthUser} from "../models";
 import {AuthStoreService} from "./auth-store.service";
 
 @Injectable({
@@ -14,8 +14,8 @@ export class AuthService {
   private router = inject(Router);
   private firebaseAuthService = inject(FirebaseAuthService);
   private firestoreUsersService = inject(FirestoreUsersService);
-  private snackBarService = inject(SnackBarService);
   private authStoreService = inject(AuthStoreService);
+  private snackBarService = inject(SnackBarService);
 
 
   constructor() {
@@ -52,7 +52,7 @@ export class AuthService {
     }
   }
 
-  public async authSignInWithEmailAndPassword(email: string, password: string) {
+  public async authSignInWithEmailAndPassword(email: string, password: string): Promise<void> {
 
     const {success, payload, error} = await this.firebaseAuthService.onSignInWithEmailAndPassword(email, password);
 
@@ -62,8 +62,7 @@ export class AuthService {
     // Authentication success.
     if (success && payload) {
 
-      // Load and set user from firestore.
-      const userData = await this.firestoreUsersService.getUserById(payload.uid);
+      const userData = await this.handleUserData(payload);
 
       if (userData) {
         this.handleSuccessAuthentication(userData);
@@ -71,7 +70,7 @@ export class AuthService {
     }
   }
 
-  public async authAuthenticateWithGoogle() {
+  public async authAuthenticateWithGoogle(): Promise<void> {
     const {success, payload, error} = await this.firebaseAuthService.onAuthWithGoogle();
 
     // Error on authentication.
@@ -81,7 +80,7 @@ export class AuthService {
     if (success && payload) {
 
       // Check if user exist.
-      const userData = await this.firestoreUsersService.getUserById(payload.uid);
+      const userData = await this.handleUserData(payload);
 
       // This is because if the email is @gmail.com google is the trustiest provider and firebase overwrite before
       // authentications with others providers.
@@ -107,7 +106,7 @@ export class AuthService {
     }
   }
 
-  public async authAuthenticateWithGithub() {
+  public async authAuthenticateWithGithub(): Promise<void> {
     const {success, payload, error} = await this.firebaseAuthService.onAuthWithGithub();
 
     // Error on authentication.
@@ -117,7 +116,7 @@ export class AuthService {
     if (success && payload) {
 
       // Check if user exist.
-      const userData = await this.firestoreUsersService.getUserById(payload.uid);
+      const userData = await this.handleUserData(payload);
 
       if (!userData) {
         //   Sign up.
@@ -139,7 +138,7 @@ export class AuthService {
     }
   }
 
-  public async authAuthenticateWithFacebook() {
+  public async authAuthenticateWithFacebook(): Promise<void> {
     const {success, payload, error} = await this.firebaseAuthService.onAuthWithFacebook();
 
     // Error on authentication.
@@ -149,7 +148,7 @@ export class AuthService {
     if (success && payload) {
 
       // Check if user exist.
-      const userData = await this.firestoreUsersService.getUserById(payload.uid);
+      const userData = await this.handleUserData(payload);
 
       if (!userData) {
         //   Sign up.
@@ -171,7 +170,7 @@ export class AuthService {
     }
   }
 
-  public async authSendPasswordResetEmail(email: string) {
+  public async authSendPasswordResetEmail(email: string): Promise<void> {
 
     const {success, payload, error} = await this.firebaseAuthService.onSendPasswordResetEmail(email);
 
@@ -180,15 +179,15 @@ export class AuthService {
     if (success && payload) this.snackBarService.showSuccessSnackBar(payload);
   }
 
-  public async authSignOut() {
-    await this.firebaseAuthService.onSignOut();
+  public async authSendEmailVerification(): Promise<void> {
+    const {success, payload, error} = await this.firebaseAuthService.onSendEmailVerification();
 
-    this.authStoreService.setLoggedUser(null);
+    if (!success && error) return this.handleFailedAuthentication(error);
 
-    await this.router.navigate(['/auth']);
+    if (success && payload) return this.snackBarService.showSuccessSnackBar(payload);
   }
 
-  public async authUpdateUserPassword(newPassword: string) {
+  public async authUpdateUserPassword(newPassword: string): Promise<void> {
 
     const {success, payload, error} = await this.firebaseAuthService.onUpdateUserPassword(newPassword);
 
@@ -197,20 +196,62 @@ export class AuthService {
     if (success && payload) this.snackBarService.showSuccessSnackBar(payload);
   }
 
-  private handleSuccessAuthentication(userData: User) {
-    this.authStoreService.setAuthError(null);
-    this.authStoreService.setLoggedUser(userData);
+  public async authSignOut(): Promise<void> {
+    await this.firebaseAuthService.onSignOut();
+
+    this.authStoreService.setCurrentUser(null);
+
+    await this.router.navigate(['/auth']);
   }
 
-  private handleFailedAuthentication(errorMessage: string) {
-    this.authStoreService.setLoggedUser(null);
+  public async reauthenticateUserIfIsPossible(): Promise<User | undefined> {
+    // Check user es authenticated in firebase.
+    const firebaseUserAuthenticated = this.firebaseAuthService.getFirebaseUserAuthenticated();
+
+    if (!firebaseUserAuthenticated) return undefined;
+
+    const userData = await this.firestoreUsersService.getUserById(firebaseUserAuthenticated.uid);
+
+    if (userData) {
+      this.authStoreService.setCurrentUser(userData);
+
+      this.snackBarService.showSuccessSnackBar(`${userData.userName} has benn re-authenticated`)
+
+      return userData;
+    }
+
+    return undefined;
+  }
+
+  private async handleUserData(payload: FirebaseAuthUser): Promise<User | undefined> {
+    // Update fields which can get changes.
+    const {uid, providers, emailVerified, lastSignInTime, phoneNumber} = payload;
+
+    const userExist = await this.firestoreUsersService.getUserById(payload.uid);
+
+    if (!userExist) return undefined;
+
+    await this.firestoreUsersService.updateUser(uid, {lastSignInTime, emailVerified, providers, phoneNumber});
+
+    // Load and set user from firestore.
+    return await this.firestoreUsersService.getUserById(payload.uid);
+  }
+
+  private handleSuccessAuthentication(userData: User): void {
+    this.authStoreService.setAuthError(null);
+    this.authStoreService.setCurrentUser(userData);
+  }
+
+  private handleFailedAuthentication(errorMessage: string): void {
+    this.authStoreService.setCurrentUser(null);
     this.authStoreService.setAuthError(errorMessage)
   }
 
   // When logged user is defined navigate to /todos.
-  private authRedirectEffect() {
+  private authRedirectEffect(): void {
     effect(() => {
-      if (this.authStoreService.getLoggedUser()() !== null) {
+      if (this.authStoreService.getCurrentUser()() !== null) {
+
         this.router.navigate(['/todos']).then();
       }
     })

@@ -1,19 +1,21 @@
 import {inject, Injectable} from '@angular/core';
 import {FirebaseDb} from "../../firebase.config";
-import {addDoc, collection, deleteDoc, doc, getDocs, query, Timestamp, updateDoc} from "firebase/firestore";
+import {addDoc, collection, deleteDoc, doc, getDocs, query, Timestamp, updateDoc, where} from "firebase/firestore";
 // Models.
-import type {Todo, TodoData, TodosResponse} from "../models";
+import type {Todo, TodoFirebaseData, TodosResponse} from "../models";
 // Services.
 import {SnackBarService} from "../../services";
 
-@Injectable()
+@Injectable({
+  providedIn: "root"
+})
 export class FirestoreTodosService {
 
   private snackBarService = inject(SnackBarService);
 
-  public async getAllTodos(): Promise<Todo[]> {
+  public async getAllTodosByUser(userId: string): Promise<Todo[]> {
     try {
-      const queryConsult = query(collection(FirebaseDb, 'todos'))
+      const queryConsult = query(collection(FirebaseDb, 'todos',), where('userId', '==', userId))
       // where('userId', '==', payload));
       const querySnapshot = await getDocs(queryConsult);
 
@@ -46,12 +48,13 @@ export class FirestoreTodosService {
   }
 
 
-  public async addTodo(title: string, dueDate: Date): Promise<string> {
+  public async addTodo(title: string, dueDate: Date, userId: string): Promise<string> {
     try {
-      const newTodoData: TodoData = {
+      const newTodoData: TodoFirebaseData = {
         title,
+        userId,
         completed: false,
-        date: Timestamp.fromDate(new Date(dueDate)),
+        date: Timestamp.fromDate(new Date(dueDate))
       }
 
       const collectionRef = collection(FirebaseDb, 'todos')

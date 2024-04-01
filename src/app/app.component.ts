@@ -1,4 +1,4 @@
-import {afterNextRender, Component, inject, signal, WritableSignal} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {NgIconComponent, provideIcons} from "@ng-icons/core";
 import {MatRipple} from "@angular/material/core";
@@ -26,8 +26,6 @@ import {
 } from '@ng-icons/bootstrap-icons';
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {AppLoadingService} from "./services";
-import {AuthStoreService} from "./auth";
-import {User} from "./users";
 
 @Component({
   selector: 'app-root',
@@ -62,29 +60,24 @@ import {User} from "./users";
 
 export class AppComponent {
   public appLoadingService = inject(AppLoadingService);
-  private authStoreService = inject(AuthStoreService);
-  private currentUser: WritableSignal<User | null> = signal<User | null>(null);
-
-
-  constructor() {
-    // afterNextRender(() => {
-    //   this.syncUserWithLocalStorage();
-    // })
-  }
-
-  // private syncUserWithLocalStorage() {
-  //   const userData = (JSON.parse(localStorage.getItem('userData')!) as User) ?? null;
+  // public router = inject(Router);
+  // private authService = inject(AuthService);
   //
-  //   console.log(userData)
-  //   if (!this.authStoreService.getLoggedUser()()) {
+  // constructor() {
+  // }
   //
-  //     if (userData === null) {
-  //       return this.authStoreService.setLoggedUser(null);
-  //     }
+  // async ngOnInit() {
+  //   await this.handleUserReAuthentication();
+  // }
   //
-  //     return this.authStoreService.setLoggedUser(userData);
-  //   }
+  // private async handleUserReAuthentication() {
+  //   this.appLoadingService.setIsLoading(true);
   //
-  //   localStorage.setItem('userData', JSON.stringify(this.authStoreService.getLoggedUser()()));
+  //   // This is the way can I do to keep user logging In, on Angular Server Side.
+  //   const authenticatedUser = await this.authService.reauthenticateUserIfIsPossible();
+  //
+  //   if (authenticatedUser) await this.router.navigate(['/todos']);
+  //
+  //   this.appLoadingService.setIsLoading(false);
   // }
 }

@@ -31,10 +31,18 @@ export class UserSettingsMenuComponent {
   private appLoadingService = inject(AppLoadingService);
 
   constructor() {
-    this.currentUser = this.authStoreService.getLoggedUser();
+    this.currentUser = this.authStoreService.getCurrentUser();
   }
 
-  async handleSignOut() {
+  async handleEmailVerification(): Promise<void> {
+    this.appLoadingService.setIsLoading(true);
+
+    await this.authService.authSendEmailVerification();
+
+    this.appLoadingService.setIsLoading(false);
+  }
+
+  async handleSignOut(): Promise<void> {
     this.appLoadingService.setIsLoading(true);
 
     await this.authService.authSignOut();

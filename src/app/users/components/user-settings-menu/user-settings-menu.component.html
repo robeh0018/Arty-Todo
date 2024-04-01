@@ -22,14 +22,18 @@
     </button>
 
     <!--Verify email.-->
-    <button class="flex gap-2 items-center" mat-menu-item>
+    <button
+      (click)="handleEmailVerification()"
+      [disabled]="currentUser()?.emailVerified"
+      class="flex gap-2 items-center"
+      mat-menu-item>
       <ng-icon
         [name]="currentUser()?.emailVerified ? 'bootstrapEnvelopeCheck' : 'bootstrapEnvelopeX'"
         [ngClass]="currentUser()?.emailVerified ? 'text-green-400' : 'text-red-400'"
         class="text-xl"
         matMenuItemIcon
       />
-      <span class="text-sm">Verify email</span>
+      <span class="text-sm">{{ currentUser()?.emailVerified ? 'Email verified' : 'Verify email' }}</span>
     </button>
 
     <!--Update password-->
