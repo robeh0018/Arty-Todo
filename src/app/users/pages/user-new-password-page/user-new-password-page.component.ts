@@ -1,29 +1,27 @@
 import {Component, inject} from '@angular/core';
-import AuthLayoutPageComponent from "../auth-layout-page/auth-layout-page.component";
-import {AuthTitleComponent} from "../../components";
 import {NgIcon} from "@ng-icons/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgClass} from "@angular/common";
+import {RouterLink} from "@angular/router";
 import type {NewPasswordFormTypes} from "../../models";
 import {AppLoadingService} from "../../../services";
-import {AuthService} from "../../services";
-import {RouterLink} from "@angular/router";
+import {AuthService} from "../../../auth";
+import {UserLayoutPageComponent} from "../user-layout-page/user-layout-page.component";
 
 @Component({
-  selector: 'app-new-password-page',
+  selector: 'app-user-new-password-page',
   standalone: true,
   imports: [
-    AuthLayoutPageComponent,
-    AuthTitleComponent,
     NgIcon,
     ReactiveFormsModule,
     NgClass,
-    RouterLink
+    RouterLink,
+    UserLayoutPageComponent
   ],
-  templateUrl: './new-password-page.component.html',
+  templateUrl: './user-new-password-page.component.html',
   styles: ``
 })
-export default class NewPasswordPageComponent {
+export default class UserNewPasswordPageComponent {
   public newPasswordForm: FormGroup<NewPasswordFormTypes>;
   public appLoadingService = inject(AppLoadingService);
   private authService = inject(AuthService);
@@ -39,6 +37,8 @@ export default class NewPasswordPageComponent {
     await this.authService.authUpdateUserPassword(this.newPasswordForm.value.password!);
 
     this.appLoadingService.setIsLoading(false);
+
+    this.newPasswordForm.reset();
   }
 
   private initForm(): FormGroup<NewPasswordFormTypes> {

@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {TodosService} from "../../../todos";
+import {TodosService, TodosStoreService} from "../../../todos";
 import type {SearchTodoForm} from "../../models";
 
 @Component({
@@ -23,7 +23,7 @@ import type {SearchTodoForm} from "../../models";
       >
     </form>
 
-    @if (todosService.searchedTodosCount() === 0 && searchForm.get('searchValue')?.value) {
+    @if (todosStoreService.searchedTodosCount() === 0 && searchForm.get('searchValue')?.value) {
       <!--Ponerle uniconito comico-->
       <p class="text-red-400 text-center mt-2 text-sm">No results found on this search</p>
     }
@@ -31,19 +31,13 @@ import type {SearchTodoForm} from "../../models";
 })
 export class SearchTodoInputComponent implements OnInit {
 
-  private fb = inject(FormBuilder);
   public todosService = inject(TodosService);
-
+  public todosStoreService = inject(TodosStoreService);
   public searchForm: FormGroup<SearchTodoForm>;
+  private fb = inject(FormBuilder);
 
   constructor() {
     this.searchForm = this.initForm();
-  }
-
-  private initForm(): FormGroup<SearchTodoForm> {
-    return this.fb.group({
-      searchValue: [''],
-    })
   }
 
   ngOnInit() {
@@ -53,6 +47,12 @@ export class SearchTodoInputComponent implements OnInit {
       }
 
       this.todosService.searchTodos(searchValue!);
+    })
+  }
+
+  private initForm(): FormGroup<SearchTodoForm> {
+    return this.fb.group({
+      searchValue: [''],
     })
   }
 }

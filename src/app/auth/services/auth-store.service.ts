@@ -6,26 +6,30 @@ import {User} from "../../users";
 })
 export class AuthStoreService {
 
-  private loggedUser: WritableSignal<User | null> = signal<User | null>(null);
+  private currentUser: WritableSignal<User | null> = signal<User | null>(null);
   private authError: WritableSignal<string | null> = signal<string | null>(null);
 
   constructor() {
   }
 
-  getLoggedUser() {
-    return this.loggedUser.asReadonly();
+  public getCurrentUser() {
+    return this.currentUser.asReadonly();
   }
 
-  setLoggedUser(user: User | null) {
-    this.loggedUser.set(user);
+  public getCurrentUserId() {
+    return this.currentUser()?.uid;
   }
 
-  getAuthError() {
+  public setCurrentUser(user: User | null) {
+
+    this.currentUser.set(user);
+  }
+
+  public getAuthError() {
     return this.authError.asReadonly();
   }
 
-  setAuthError(errorMessage: string | null) {
+  public setAuthError(errorMessage: string | null) {
     this.authError.set(errorMessage);
   }
-
 }

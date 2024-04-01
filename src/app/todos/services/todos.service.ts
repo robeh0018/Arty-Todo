@@ -1,89 +1,79 @@
-import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
+import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 // Models
 import type {Todo} from "../models";
 // FirestoreDb service.
 import {FirestoreTodosService} from "./firestore-todos.service";
+import {TodosStoreService} from "./todos-store.service";
 
-@Injectable()
+@Injectable({
+  providedIn: "root",
+})
 export class TodosService {
-  private todos: WritableSignal<Todo[]> = signal<Todo[]>([]);
-  private searchedTodos: WritableSignal<Todo[]> = signal<Todo[]>([]);
-  public notCompletedTodos: Signal<Todo[]> = computed(
-    () => {
 
-      if (this.searchedTodos().length > 0) {
-        return this.searchedTodos().filter(todo => !todo.completed);
-      }
-
-      return this.todos().filter(todo => !todo.completed);
-    }
-  );
-  public completedTodos: Signal<Todo[]> = computed(
-    () => {
-
-      if (this.searchedTodos().length > 0) {
-        return this.searchedTodos().filter(todo => todo.completed);
-      }
-
-      return this.todos().filter(todo => todo.completed);
-    }
-  );
-  public searchedTodosCount: Signal<number> = computed(() => this.searchedTodos().length);
+  private todosStoreService = inject(TodosStoreService);
   // Firestore db service
   private firestoreTodosService = inject(FirestoreTodosService);
 
-  public async loadTodosData() {
-    const todos = await this.firestoreTodosService.getAllTodos();
+  private currentUserId: WritableSignal<string> = signal<string>('');
 
-    this.todos.set(todos);
+  constructor() {
+  }
+
+  public async loadTodosData(currentUserId: string) {
+    // Set current user id as global id;
+    this.currentUserId.set(currentUserId);
+
+    const todos = await this.firestoreTodosService.getAllTodosByUser(currentUserId);
+
+    this.todosStoreService.todos.set(todos);
   };
 
   public async addTodo(title: string, dueDate: Date): Promise<void> {
 
-    const todoId = await this.firestoreTodosService.addTodo(title, dueDate);
+    const todoId = await this.firestoreTodosService.addTodo(title, dueDate, this.currentUserId());
 
-    if (this.searchedTodosCount() > 0) {
-      this.updateSignalOnAddTodo(this.searchedTodos, {title, dueDate, todoId});
+    if (this.todosStoreService.searchedTodos.length > 0) {
+      this.updateSignalOnAddTodo(this.todosStoreService.todos, {title, dueDate, todoId});
     }
 
-    this.updateSignalOnAddTodo(this.todos, {title, dueDate, todoId});
+    this.updateSignalOnAddTodo(this.todosStoreService.todos, {title, dueDate, todoId});
   };
 
   public async deleteTodo(id: string): Promise<void> {
     await this.firestoreTodosService.deleteTodo(id);
 
-    if (this.searchedTodosCount() > 0) {
-      this.searchedTodos.update(searchedTodos => searchedTodos.filter(todo => todo.id !== id));
+    if (this.todosStoreService.searchedTodos.length > 0) {
+      this.todosStoreService.searchedTodos.update(searchedTodos => searchedTodos.filter(todo => todo.id !== id));
     }
 
-    this.todos.update(todos => todos.filter(todo => todo.id !== id));
+    this.todosStoreService.todos.update(todos => todos.filter(todo => todo.id !== id));
   };
 
   public async toggleComplete(todoId: string) {
 
-    await this.firestoreTodosService.toggleCompleteTodo(todoId, this.todos())
+    await this.firestoreTodosService.toggleCompleteTodo(todoId, this.todosStoreService.todos())
 
-    if (this.searchedTodosCount() > 0) {
+    if (this.todosStoreService.searchedTodosCount() > 0) {
 
-      this.updateSignalOnToggleComplete(this.searchedTodos, todoId);
+      this.updateSignalOnToggleComplete(this.todosStoreService.searchedTodos, todoId);
     }
 
-    this.updateSignalOnToggleComplete(this.todos, todoId);
+    this.updateSignalOnToggleComplete(this.todosStoreService.todos, todoId);
   };
 
 
   public searchTodos(searchValue: string): void {
 
-    this.searchedTodos.set(this.todos());
+    this.todosStoreService.searchedTodos.set(this.todosStoreService.todos());
 
-    const searchResult = this.searchedTodos().filter(
+    const searchResult = this.todosStoreService.searchedTodos().filter(
       todo => todo.title.toLowerCase().includes(searchValue.toLowerCase()))
 
-    this.searchedTodos.set(searchResult);
+    this.todosStoreService.searchedTodos.set(searchResult);
   };
 
   public resetSearch(): void {
-    this.searchedTodos.set([]);
+    this.todosStoreService.searchedTodos.set([]);
   };
 
 
@@ -91,7 +81,7 @@ export class TodosService {
   private updateSignalOnAddTodo(signal: WritableSignal<Todo[]>, fields: {
     title: string,
     dueDate: Date,
-    todoId: string
+    todoId: string,
   }): void {
     const {title, dueDate, todoId} = fields;
 
@@ -102,6 +92,7 @@ export class TodosService {
         id: todoId,
         completed: false,
         date: new Date(dueDate),
+        userId: this.currentUserId(),
       }
       ])
     )

@@ -3,10 +3,24 @@
   <!--  image-->
   <div class="rounded-3xl border border-pink-400 h-64 w-full sm:w-80 md:w-52 flex m-auto shadow-md shadow-pink-300">
 
-    <ng-icon
-      class="m-auto text-pink"
-      name="bootstrapPerson"
-      size="150px"/>
+    @if (currentUser()?.photoURL) {
+
+      <img
+        alt="Profile img"
+        class="rounded-3xl m-auto"
+        height="150"
+        [ngSrc]="currentUser()?.photoURL!"
+        width="150"
+        priority
+      >
+
+    } @else {
+
+      <ng-icon
+        class="m-auto text-pink"
+        name="bootstrapPerson"
+        size="150px"/>
+    }
 
   </div>
 
@@ -16,16 +30,16 @@
 
     <div class="flex flex-col">
       <span class="font-bold">Email address</span>
-      <span>adressgoogle.com</span>
+      <span>{{ currentUser()?.email ?? 'adressgoogle.com' }}</span>
     </div>
 
     <div class="flex flex-col">
       <span class="font-bold">User Name</span>
-      <span>arteezy</span>
+      <span>{{ currentUser()?.userName ?? 'No user name' }}</span>
     </div>
     <div class="flex flex-col">
       <span class="font-bold">Full Name</span>
-      <span>Roberto M Padilla Garcia</span>
+      <span>{{ currentUser()?.fullName ?? 'No full name' }}</span>
     </div>
 
     <button

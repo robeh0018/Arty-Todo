@@ -11,7 +11,7 @@ import {
 // Models.
 import type {Todo} from "../../models";
 // Services
-import {TodosService} from "../../../todos";
+import {TodosService, TodosStoreService} from "../../../todos";
 // Components.
 import {TodoListHeadSectionComponent} from "../todo-list-head-section/todo-list-head-section.component";
 import {TodoListItemComponent} from "../todo-list-item/todo-list-item.component";
@@ -38,10 +38,11 @@ export class TodoListComponent {
   public notCompletedTodos: Signal<Todo[]>;
 
   private todosService = inject(TodosService);
+  private todosStoreService = inject(TodosStoreService);
 
   constructor() {
-    this.completedTodos = this.todosService.completedTodos;
-    this.notCompletedTodos = this.todosService.notCompletedTodos;
+    this.completedTodos = this.todosStoreService.completedTodos;
+    this.notCompletedTodos = this.todosStoreService.notCompletedTodos;
   }
 
   public async drop(event: CdkDragDrop<Todo[]>) {

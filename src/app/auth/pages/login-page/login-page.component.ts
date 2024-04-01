@@ -23,5 +23,4 @@ import AuthLayoutPageComponent from "../auth-layout-page/auth-layout-page.compon
   styles: ``
 })
 export default class LoginPageComponent {
-
 }

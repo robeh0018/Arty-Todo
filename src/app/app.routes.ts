@@ -1,6 +1,5 @@
 import {Routes} from '@angular/router';
-import {FirestoreTodosService, TodosService} from "./todos";
-import {authGuard} from "./auth";
+import {authGuard, authReAuthenticateGuard} from "./auth";
 
 export const routes: Routes = [
 
@@ -11,7 +10,6 @@ export const routes: Routes = [
   },
   {
     path: '',
-    providers: [FirestoreTodosService, TodosService],
     // Todos layout.
     loadComponent: () => import('./layout/app-layout/app-layout.component'),
     // Todos routes.
@@ -19,6 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
+    canActivateChild: [authReAuthenticateGuard],
     // Auth routes
     loadChildren: () => import('./auth/auth.routes')
   },

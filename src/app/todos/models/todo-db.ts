@@ -5,10 +5,12 @@ export interface TodosResponse {
   date: Timestamp;
   completed: boolean;
   title: string;
+  userId: string;
 }
 
-export interface TodoData {
+export interface TodoFirebaseData {
   completed: boolean;
   title: string;
   date: Timestamp;
+  userId: string;
 }
