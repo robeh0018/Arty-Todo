@@ -12,7 +12,7 @@ import {NavBarComponent} from "../../shared";
     <!--Navbar-->
     <app-nav-bar/>
 
-    <div class="mt-20">
+    <div class="mt-16">
 
       <router-outlet/>
 

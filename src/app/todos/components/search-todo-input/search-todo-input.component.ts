@@ -42,9 +42,8 @@ export class SearchTodoInputComponent implements OnInit {
 
   ngOnInit() {
     this.searchForm.valueChanges.subscribe(({searchValue}) => {
-      if (searchValue && searchValue.length === 0) {
-        this.todosService.resetSearch();
-      }
+
+      if (searchValue!.length === 0) return this.todosService.resetSearch();
 
       this.todosService.searchTodos(searchValue!);
     })

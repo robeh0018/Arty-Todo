@@ -1,0 +1,170 @@
+<div class="flex justify-between items-center gap-5 w-full">
+
+  <!-- Filter -->
+  <div class="relative mb-1.5 w-full">
+    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+      <ng-icon class="text-pink-300 text-sm" name="bootstrapSearch"/>
+    </div>
+    <input
+      #input
+      (keyup)="applyFilter($event)"
+      class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus "
+      placeholder="Filter users..."
+      type="search"
+    >
+  </div>
+
+  <!--  New user -->
+  <button
+    (click)="handleAddUser()"
+    class="flex items-center text-center text-sm bg-transparent p-2 rounded-xl hover:scale-105 on-focus transition-all">
+
+    <ng-icon
+      class="m-auto text-xl text-green-500"
+      name="bootstrapPlus"/>
+
+    <span class="ms-1 truncate">Add new user</span>
+  </button>
+</div>
+
+<div class="mat-elevation-z3 rounded max-h-[70vh] overflow-auto scroller">
+  <!--Table-->
+  <table [dataSource]="dataSource" mat-table matSort>
+
+    @for (displayedColumn of displayedColumns(); track $index) {
+      <!-- No. Column -->
+      <ng-container [matColumnDef]="displayedColumn">
+        <th *matHeaderCellDef class="text-pink-400 capitalize" mat-header-cell
+            mat-sort-header sortActionDescription="Sort by {{ displayedColumn }}">
+          {{ displayedColumn }}
+        </th>
+
+        <td
+          [ngClass]="{'text-gray-500': !row[displayedColumn]}"
+          *matCellDef="let row"
+          mat-cell>
+
+          <!--Displaying columns-->
+          @switch (displayedColumn) {
+
+            <!--Times-->
+            @case ('creationTime') {
+              {{ handleTableTimes(row[displayedColumn]) }}
+            }
+            @case ('lastSignInTime') {
+              {{ handleTableTimes(row[displayedColumn]) }}
+            }
+
+            <!--Email verified-->
+            @case ('emailVerified') {
+              {{ row[displayedColumn] ? 'yes' : 'no' }}
+            }
+
+            <!-- Providers-->
+            @case ('providers') {
+              <!--Google-->
+              @if (row[displayedColumn] == 'google.com') {
+                <ng-icon
+                  class="text-sm"
+                  name="bootstrapGoogle"
+                  matTooltip="Google"
+                />
+
+                <!--Password-->
+              } @else if (row[displayedColumn] == 'password') {
+                <ng-icon
+                  class="text-pink-300 text-sm"
+                  name="bootstrapEnvelope"
+                  matTooltip="Password"
+                />
+
+                <!--Github-->
+              } @else if (row[displayedColumn] == 'github.com') {
+                <ng-icon
+                  class="text-sm text-neutral-800"
+                  name="bootstrapGithub"
+                  matTooltip="Github"
+                />
+
+                <!--Google and password-->
+              } @else if (row[displayedColumn] == 'password,google.com' || row[displayedColumn] == 'google.com,password') {
+                <div class="flex gap-1">
+                  <ng-icon
+                    class="text-pink-300 text-sm"
+                    name="bootstrapEnvelope"
+                    matTooltip="Password"
+                  />
+                  <ng-icon
+                    class="text-sm"
+                    name="bootstrapGoogle"
+                    matTooltip="Google"
+                  />
+                </div>
+
+                <!--Github and password-->
+              } @else if (row[displayedColumn] == 'password,github.com' || row[displayedColumn] == 'github.com,password') {
+                <div class="space-x-1">
+                  <ng-icon
+                    class="text-pink-300 text-sm"
+                    name="bootstrapEnvelope"
+                    matTooltip="Password"
+                  />
+                  <ng-icon
+                    class="text-sm text-neutral-800"
+                    name="bootstrapGithub"
+                    matTooltip="Github"
+                  />
+                </div>
+
+                <!--Unknown provider-->
+              } @else {
+                {{ row[displayedColumn] }}
+              }
+            }
+
+            <!-- Actions-->
+            @case ('actions') {
+              <div class="flex gap-1">
+                <!--Edit user-->
+                <button
+                  (click)="handleEditUser()"
+                  class="rounded-3xl p-1 flex items-center ms-1 focus:outline-none focus:ring-1 focus:ring-blue-400 hover:scale-125 transition-all"
+                  type="button">
+                  <ng-icon class="text-blue-400" name="bootstrapPencil"/>
+                </button>
+
+                <!--Delete user -->
+                <button
+                  (click)="handleDeleteUser()"
+                  class="rounded-3xl p-1 flex items-center ms-1 focus:outline-none focus:ring-1 focus:ring-red-500 hover:scale-125 transition-all"
+                  type="button">
+                  <ng-icon class="text-red-500" name="bootstrapTrash"/>
+                </button>
+              </div>
+            }
+
+            <!--Default case-->
+            @default {
+              {{ row[displayedColumn] ? row[displayedColumn] : '---' }}
+            }
+          }
+        </td>
+      </ng-container>
+    }
+
+    <tr *matHeaderRowDef="displayedColumns(); sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns();" mat-row></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr *matNoDataRow class="mat-row">
+      <td class="mat-cell text-red-400 ps-3" colspan="4">No data matching the filter "{{ input.value }}"</td>
+    </tr>
+  </table>
+
+  <!--Paginator-->
+  <mat-paginator
+    [length]="userTableData.length"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    aria-label="Select page of users">
+  </mat-paginator>
+</div>

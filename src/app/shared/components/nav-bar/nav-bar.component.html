@@ -18,6 +18,7 @@
   <!--Nav items-->
   <ul class="flex items-center justify-center gap-5">
 
+    <!--Todos-->
     <li class="p-2 hover:text-pink-300 hover:scale-110 rounded-xl transition-all">
       <a
         class="flex flex-col items-center gap-1"
@@ -30,6 +31,20 @@
       </a>
     </li>
 
+    <!--Users list just show to admin users.-->
+    <li class="p-2 hover:text-pink-300 hover:scale-110 rounded-xl transition-all">
+      <a
+        class="flex flex-col items-center gap-1"
+        routerLink="/users/users-list"
+        routerLinkActive="text-pink-400">
+        <ng-icon
+          class="text-xl"
+          name="bootstrapPeople"/>
+        <span class="text-xs">Users</span>
+      </a>
+    </li>
+
+    <!--Settings-->
     <li class="p-2 hover:text-pink-300 hover:scale-110 rounded-xl transition-all">
       <app-user-settings-menu/>
     </li>

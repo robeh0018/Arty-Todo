@@ -14,9 +14,9 @@ const usersRoutes: Routes = [
 
   // Should be admin.
   {
-    path: 'users',
+    path: 'users-list',
     title: 'User List',
-    loadComponent: () => import('./pages/user-profile-page/user-profile-page.component'),
+    loadComponent: () => import('./pages/user-list/user-list.component'),
   },
 ]
 

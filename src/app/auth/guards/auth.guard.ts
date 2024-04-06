@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
   // 1. Check userData on auth store.
   const loggedUser = authStoreService.getCurrentUser()();
 
-  if (loggedUser) return true;
+  // if (!loggedUser)return router.createUrlTree(['/auth']);
 
-  return router.createUrlTree(['/auth']);
+  return true
 };

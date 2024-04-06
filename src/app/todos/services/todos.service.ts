@@ -32,8 +32,8 @@ export class TodosService {
 
     const todoId = await this.firestoreTodosService.addTodo(title, dueDate, this.currentUserId());
 
-    if (this.todosStoreService.searchedTodos.length > 0) {
-      this.updateSignalOnAddTodo(this.todosStoreService.todos, {title, dueDate, todoId});
+    if (this.todosStoreService.searchedTodosCount() > 0) {
+      this.updateSignalOnAddTodo(this.todosStoreService.searchedTodos, {title, dueDate, todoId});
     }
 
     this.updateSignalOnAddTodo(this.todosStoreService.todos, {title, dueDate, todoId});
@@ -42,7 +42,7 @@ export class TodosService {
   public async deleteTodo(id: string): Promise<void> {
     await this.firestoreTodosService.deleteTodo(id);
 
-    if (this.todosStoreService.searchedTodos.length > 0) {
+    if (this.todosStoreService.searchedTodosCount() > 0) {
       this.todosStoreService.searchedTodos.update(searchedTodos => searchedTodos.filter(todo => todo.id !== id));
     }
 
@@ -60,7 +60,6 @@ export class TodosService {
 
     this.updateSignalOnToggleComplete(this.todosStoreService.todos, todoId);
   };
-
 
   public searchTodos(searchValue: string): void {
 

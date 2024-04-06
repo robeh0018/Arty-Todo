@@ -16,8 +16,9 @@ export const formatDatesForUI = (date: Date): DateUI => {
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
   if (isSameDay(tomorrowDate, date)) return 'tomorrow'
 
+  const finalDate = new Date(date);
   // Default date toDateString.
-  return new Date(date).toDateString();
+  return `${finalDate.getMonth()}/${finalDate.getDay()}/${finalDate.getFullYear()}`;
 }
 
 

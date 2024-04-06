@@ -40,9 +40,10 @@ $Todo-App-theme: mat.define-dark-theme((
     accent: $Todo-App-accent,
     warn: $Todo-App-warn,
   ),
-  typography: $kids-typography,
-  density: 0,
+  background typography: $kids-typography,
+  density: -1,
 ));
+
 
 @include mat.all-component-themes($Todo-App-theme);
 
@@ -51,6 +52,11 @@ $Todo-App-theme: mat.define-dark-theme((
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --back-ground-color: #171717;
+  --primary-color: #f472b6
+}
 
 body {
   font-family: "Maiandra GD", sans-serif;
@@ -67,4 +73,18 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  scrollbar-color: var(--primary-color) var(--back-ground-color);
+  scrollbar-width: thin;
+  //scroll-margin-inline-start: 10px;
+  //scroll-margin-left: 10px;
+  //scroll-margin-block-start: 10px;
+}
+
+.scroller {
+
+  scrollbar-width: thin;
+}
+
+mat-paginator > * {
+  background-color: var(--back-ground-color);
 }
