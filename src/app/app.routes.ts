@@ -17,7 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
-    canActivateChild: [authReAuthenticateGuard],
+    // canActivateChild: [authReAuthenticateGuard],
     // Auth routes
     loadChildren: () => import('./auth/auth.routes')
   },
