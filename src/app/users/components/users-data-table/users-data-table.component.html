@@ -1,30 +1,15 @@
-<div class="flex justify-between items-center gap-5 w-full">
-
-  <!-- Filter -->
-  <div class="relative mb-1.5 w-full">
-    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-      <ng-icon class="text-pink-300 text-sm" name="bootstrapSearch"/>
-    </div>
-    <input
-      #input
-      (keyup)="applyFilter($event)"
-      class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus "
-      placeholder="Filter users..."
-      type="search"
-    >
+<!-- Filter -->
+<div class="relative mb-1.5 w-full">
+  <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+    <ng-icon class="text-pink-300 text-sm" name="bootstrapSearch"/>
   </div>
-
-  <!--  New user -->
-  <button
-    (click)="handleAddUser()"
-    class="flex items-center text-center text-sm bg-transparent p-2 rounded-xl hover:scale-105 on-focus transition-all">
-
-    <ng-icon
-      class="m-auto text-xl text-green-500"
-      name="bootstrapPlus"/>
-
-    <span class="ms-1 truncate">Add new user</span>
-  </button>
+  <input
+    #input
+    (keyup)="applyFilter($event)"
+    class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus "
+    placeholder="Filter users..."
+    type="search"
+  >
 </div>
 
 <div class="mat-elevation-z3 rounded max-h-[70vh] overflow-auto scroller">
@@ -126,20 +111,12 @@
             @case ('actions') {
               <div class="flex gap-1">
                 <!--Edit user-->
-                <button
-                  (click)="handleEditUser()"
-                  class="rounded-3xl p-1 flex items-center ms-1 focus:outline-none focus:ring-1 focus:ring-blue-400 hover:scale-125 transition-all"
-                  type="button">
-                  <ng-icon class="text-blue-400" name="bootstrapPencil"/>
-                </button>
+                <app-edit-user
+                  [userEmail]="row['email']"
+                />
 
                 <!--Delete user -->
-                <button
-                  (click)="handleDeleteUser()"
-                  class="rounded-3xl p-1 flex items-center ms-1 focus:outline-none focus:ring-1 focus:ring-red-500 hover:scale-125 transition-all"
-                  type="button">
-                  <ng-icon class="text-red-500" name="bootstrapTrash"/>
-                </button>
+                <app-user-delete/>
               </div>
             }
 

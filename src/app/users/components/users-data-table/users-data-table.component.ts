@@ -4,10 +4,12 @@ import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatSort, MatSortModule} from "@angular/material/sort";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgIcon} from "@ng-icons/core";
-import {UserTableData} from "../../models";
-import {formatDatesForUI} from "../../../helpers";
 import {NgClass} from "@angular/common";
 import {MatTooltip} from "@angular/material/tooltip";
+import {UserDeleteComponent} from "../user-delete/user-delete.component";
+import {EditUserComponent} from "../edit-user/edit-user.component";
+import {UserTableData} from "../../models";
+import {formatDatesForUI} from "../../../helpers";
 
 
 @Component({
@@ -20,7 +22,9 @@ import {MatTooltip} from "@angular/material/tooltip";
     MatTooltip,
     NgIcon,
     ReactiveFormsModule,
-    NgClass
+    NgClass,
+    UserDeleteComponent,
+    EditUserComponent
   ],
   templateUrl: './users-data-table.component.html',
   styles: `
@@ -69,10 +73,6 @@ export class UsersDataTableComponent implements OnChanges {
 
     return formatDatesForUI(new Date(time))
   };
-
-  public handleDeleteUser() {
-    console.log('delete')
-  }
 
   public handleAddUser() {
     console.log('add')

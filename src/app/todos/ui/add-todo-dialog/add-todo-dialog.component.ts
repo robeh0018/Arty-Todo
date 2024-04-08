@@ -40,12 +40,12 @@ export class AddTodoDialogComponent {
     this.addTodoForm = this.initForm();
   }
 
-  onCancel() {
+  public onCancel() {
 
     this.dialogRef.close();
   }
 
-  onAgreeResults() {
+  public onAgreeResults() {
 
     this.dialogRef.close(this.addTodoForm.value);
   }
