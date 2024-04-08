@@ -4,7 +4,8 @@ import {take} from "rxjs";
 import {NgIcon} from "@ng-icons/core";
 // Services.
 import {TodosService} from "../../services";
-import {DeleteTodoDialogComponent} from "../../ui";
+// Shared
+import {DeleteDialogComponent} from "../../../shared";
 
 @Component({
   selector: 'app-delete-todo',
@@ -24,13 +25,12 @@ import {DeleteTodoDialogComponent} from "../../ui";
 })
 export class DeleteTodoComponent {
   @Input({required: true}) todoId!: string;
-
   private todosService = inject(TodosService);
   private dialog: MatDialog = inject(MatDialog);
 
-
   handleDeleteTodoModal() {
-    const dialogRef = this.dialog.open(DeleteTodoDialogComponent);
+    const dialogRef = this.dialog.open(DeleteDialogComponent);
+    dialogRef.componentInstance.itemToDeleteName = 'ToDo';
 
     dialogRef.afterClosed().pipe(take(1)).subscribe(async (result: boolean) => {
       if (result) await this.todosService.deleteTodo(this.todoId);

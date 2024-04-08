@@ -1,11 +1,11 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle} from "@angular/material/dialog";
 import {NgIcon, provideIcons} from "@ng-icons/core";
 // Bootstrap icons.
 import {bootstrapInfoCircle, bootstrapX} from '@ng-icons/bootstrap-icons';
 
 @Component({
-  selector: 'app-delete-todo-dialog',
+  selector: 'app-delete-dialog',
   standalone: true,
   imports: [
     MatDialogContent,
@@ -13,14 +13,16 @@ import {bootstrapInfoCircle, bootstrapX} from '@ng-icons/bootstrap-icons';
     MatDialogActions,
     NgIcon,
   ],
-  templateUrl: './delete-todo-dialog.component.html',
+  templateUrl: './delete-dialog.component.html',
   styles: ``,
   viewProviders: [
     provideIcons({bootstrapInfoCircle, bootstrapX})
   ]
 })
-export class DeleteTodoDialogComponent {
-  private dialogRef: MatDialogRef<DeleteTodoDialogComponent> = inject(MatDialogRef);
+export class DeleteDialogComponent {
+  @Input({required: true}) itemToDeleteName!: string;
+
+  private dialogRef: MatDialogRef<DeleteDialogComponent> = inject(MatDialogRef);
 
   onCancel() {
 
