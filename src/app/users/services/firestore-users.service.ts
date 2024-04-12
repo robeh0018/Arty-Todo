@@ -1,13 +1,15 @@
-import {Injectable} from '@angular/core';
-import {collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where} from "firebase/firestore";
+import {inject, Injectable} from '@angular/core';
+import {collection, doc, getDoc, getDocs, query, setDoc, updateDoc} from "firebase/firestore";
 import {FirebaseDb} from "../../firebase.config";
-import {UpdatePasswordPayload, User} from "../models";
+import type {User, UserCanChangeOnAuthPayload, UserUpdatePayload} from "../models";
+import {SnackBarService} from "../../services";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreUsersService {
 
+  private snackBarService: SnackBarService = inject(SnackBarService);
 
   public async getAllUsers(): Promise<User[]> {
     try {
@@ -64,46 +66,45 @@ export class FirestoreUsersService {
       } as User;
 
     } catch (e) {
-      console.log(e);
+      console.log(`Error getting user with id ${userId}`);
 
       return undefined;
     }
   }
 
-  public async getUsersByEmail(email: string) {
+  public async updateUser(userId: string, payload: UserUpdatePayload) {
 
     try {
-      let users: User[] = [];
 
-      const q = query(collection(FirebaseDb, "users"), where("email", "==", email));
+      const {userName, fullName, role} = payload;
 
-      const querySnapshot = await getDocs(q);
+      // User exist.
+      const userExist = await this.getUserById(userId);
 
-      querySnapshot.forEach((doc) => {
+      if (!userExist) return;
 
-        users.push(
-          {
-            uid: doc.id,
-            ...doc.data()
-          } as User
-        );
+      const docRef = doc(FirebaseDb, "users", userId);
 
-      })
+      await updateDoc(docRef, {userName, fullName, role});
 
-      return users;
+      this.snackBarService.showSuccessSnackBar('User updated');
     } catch (e) {
+      console.log(`Error while updating user: ${e}`);
 
-      console.log(e);
-
-      return [];
+      this.snackBarService.showFailSnackBar('User update');
     }
   }
 
-  public async updateUser(userId: string, payload: UpdatePasswordPayload) {
+  public async updateUserCanChangeFieldsOnAuth(userId: string, payload: UserCanChangeOnAuthPayload) {
 
-    const docRef = doc(FirebaseDb, "users", userId);
+    try {
 
-    await updateDoc(docRef, {...payload});
+      const docRef = doc(FirebaseDb, "users", userId);
+
+      await updateDoc(docRef, {...payload});
+
+    } catch (e) {
+      console.log(`Error while updating userCanChangeFieldsOnAuth: ${e}`);
+    }
   }
-
 }

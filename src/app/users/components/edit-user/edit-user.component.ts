@@ -3,8 +3,9 @@ import {NgIcon} from "@ng-icons/core";
 import {MatDialog} from "@angular/material/dialog";
 import {take} from "rxjs";
 import {EditUserDialogComponent} from "../ui";
-import {UserFormTypes} from "../../models";
-import {FirestoreUsersService} from "../../services";
+import {UserUpdatePayload} from "../../models";
+import {AdminUsersService} from "../../services";
+import {AppLoadingService} from "../../../services";
 
 @Component({
   selector: 'app-edit-user',
@@ -26,7 +27,8 @@ export class EditUserComponent {
 
   @Input({required: true}) userEmail!: string;
   private dialog: MatDialog = inject(MatDialog);
-  private firestoreUsersService = inject(FirestoreUsersService);
+  private adminUsersService = inject(AdminUsersService);
+  private appLoadingService = inject(AppLoadingService);
 
 
   handleEditUser() {
@@ -38,22 +40,30 @@ export class EditUserComponent {
       width: '30rem',
     });
 
-    dialogRef.afterClosed().pipe(take(1)).subscribe((result: UserFormTypes) => {
-      console.log(result)
+    dialogRef.afterClosed().pipe(take(1)).subscribe(async (result: {
+      userFormValues: UserUpdatePayload,
+      userId: string
+    }) => {
+      if (result !== undefined) {
+        this.appLoadingService.setIsLoading(true);
+
+        await this.adminUsersService.adminUpdateUser(result.userId, result.userFormValues)
+
+        this.appLoadingService.setIsLoading(false);
+      }
     })
   }
 
 
-  private async getUserData() {
-    const users = await this.firestoreUsersService.getUsersByEmail(this.userEmail);
+  private getUserData() {
+    const users = this.adminUsersService.getUserByEmail(this.userEmail);
 
     // if (users.length === 0) return;
 
-    return users.map(({email, userName, fullName, role, phoneNumber}) => ({
-      email,
+    return users.map(({uid, userName, fullName, role}) => ({
+      uid,
       userName,
       fullName,
-      phoneNumber,
       role,
     }))[0];
   }

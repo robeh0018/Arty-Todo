@@ -1,4 +1,4 @@
-export interface UpdatePasswordPayload {
+export interface UserCanChangeOnAuthPayload {
   lastSignInTime?: string;
   phoneNumber: string | null
   emailVerified: boolean;

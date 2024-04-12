@@ -21,36 +21,21 @@
       <span class="sr-only">Close modal</span>
     </button>
 
+    <!--Info-->
+    <div class="w-full bg-gradient-to-r from-neutral-600 via-pink-500 to-neutral-600 rounded p-3">
+      <div class="text-pink-100 text-balance tracking-wide">
+        <p class="text-sm">An admin only has access to modify the following fields.</p>
+        <p class="text-sm">Fields such as email, phone number, or Password can only be modified by their owner
+          directly.</p>
+      </div>
+    </div>
 
     <!-- Users form -->
     <form [formGroup]="userForm" class="px-3 text-pink-100 flex flex-col gap-2 w-full">
 
-      <!--Email-->
-      <div>
-        <label class="font-medium text-sm" for="email">Email Address</label>
-        <div class="relative">
-          <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <ng-icon
-              [ngClass]="{'text-red-500':
-          userForm.controls.email.invalid && userForm.controls.email.dirty && userForm.controls.email.touched}"
-              class="text-pink-300 text-sm"
-              name="bootstrapEnvelope"/>
-          </div>
-          <input
-            [ngClass]="{'border-red-500 focus:ring-red-500 focus:ring-offset-red-500':
-        userForm.controls.email.invalid && userForm.controls.email.dirty && userForm.controls.email.touched}"
-            class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus"
-            formControlName="email"
-            id="email"
-            placeholder="Ex. example@google.com"
-            type="email"
-          >
-        </div>
-      </div>
-
       <!--UserName-->
       <div>
-        <label class="font-medium text-sm" for="email">User name</label>
+        <label class="font-medium text-sm" for="userName">User name</label>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
             <ng-icon
@@ -94,28 +79,28 @@
         </div>
       </div>
 
-      <!--Phone Number-->
-      <div class="w-full">
-        <label class="font-medium text-sm" for="fullName">Phone number</label>
-        <div class="relative">
-          <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <ng-icon
-              [ngClass]="{'text-red-500':
-          userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.dirty && userForm.controls.phoneNumber.touched}"
-              class="text-pink-300 text-sm"
-              name="bootstrapTelephone"/>
-          </div>
-          <input
-            [ngClass]="{'border-red-500 focus:ring-red-500 focus:ring-offset-red-500':
-        userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.dirty && userForm.controls.phoneNumber.touched}"
-            class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus"
-            formControlName="phoneNumber"
-            id="phoneNumber"
-            placeholder="Ex. First Last name"
-            type="text"
-          >
-        </div>
-      </div>
+      <!--      &lt;!&ndash;Phone Number&ndash;&gt;-->
+      <!--      <div class="w-full">-->
+      <!--        <label class="font-medium text-sm" for="fullName">Phone number</label>-->
+      <!--        <div class="relative">-->
+      <!--          <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">-->
+      <!--            <ng-icon-->
+      <!--              [ngClass]="{'text-red-500':-->
+      <!--          userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.dirty && userForm.controls.phoneNumber.touched}"-->
+      <!--              class="text-pink-300 text-sm"-->
+      <!--              name="bootstrapTelephone"/>-->
+      <!--          </div>-->
+      <!--          <input-->
+      <!--            [ngClass]="{'border-red-500 focus:ring-red-500 focus:ring-offset-red-500':-->
+      <!--        userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.dirty && userForm.controls.phoneNumber.touched}"-->
+      <!--            class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus"-->
+      <!--            formControlName="phoneNumber"-->
+      <!--            id="phoneNumber"-->
+      <!--            placeholder="Ex. First Last name"-->
+      <!--            type="text"-->
+      <!--          >-->
+      <!--        </div>-->
+      <!--      </div>-->
 
       <!--Role-->
       <div class="w-full flex flex-col items-center">
@@ -139,7 +124,7 @@
         [ngClass]="userForm.invalid || userForm.untouched ? 'bg-pink-400' : 'bg-pink-600 hover:bg-pink-500 on-focus'"
         class="font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center transition-all"
         type="button">
-        Add toDo
+        Update
       </button>
 
       <!--Cancel button-->

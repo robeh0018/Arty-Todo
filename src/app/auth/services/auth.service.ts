@@ -87,6 +87,7 @@ export class AuthService {
       const isADifferentProvider = !!userData?.providers.find(provider => provider !== 'google.com');
 
       if (!userData || isADifferentProvider) {
+        console.log('sign up')
         //   Sign up.
         const newUser: User = {
           ...payload,
@@ -100,6 +101,8 @@ export class AuthService {
         this.handleSuccessAuthentication(newUser);
       } else {
         //  Sign in
+        console.log('sign in')
+
 
         this.handleSuccessAuthentication(userData);
       }
@@ -229,9 +232,15 @@ export class AuthService {
 
     const userExist = await this.firestoreUsersService.getUserById(payload.uid);
 
+
     if (!userExist) return undefined;
 
-    await this.firestoreUsersService.updateUser(uid, {lastSignInTime, emailVerified, providers, phoneNumber});
+    await this.firestoreUsersService.updateUserCanChangeFieldsOnAuth(uid, {
+      lastSignInTime,
+      emailVerified,
+      providers,
+      phoneNumber
+    });
 
     // Load and set user from firestore.
     return await this.firestoreUsersService.getUserById(payload.uid);
