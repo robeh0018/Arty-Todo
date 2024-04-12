@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {authGuard, authReAuthenticateGuard} from "./auth";
+import {authGuard} from "./auth";
 
 export const routes: Routes = [
 
@@ -11,19 +11,19 @@ export const routes: Routes = [
   {
     path: '',
     // Todos layout.
+    canActivate: [authGuard],
     loadComponent: () => import('./layout/app-layout/app-layout.component'),
     // Todos routes.
     loadChildren: () => import('./todos/todos.routes')
   },
   {
     path: 'auth',
-    // canActivateChild: [authReAuthenticateGuard],
     // Auth routes
     loadChildren: () => import('./auth/auth.routes')
   },
   {
     path: 'users',
-    // Auth routes
+    // Users routes
     canActivate: [authGuard],
     loadComponent: () => import('./layout/app-layout/app-layout.component'),
     loadChildren: () => import('./users/users.routes')
@@ -34,7 +34,7 @@ export const routes: Routes = [
     loadComponent: () => import('./shared/components/page-404/page-404.component'),
   },
 
-  // Make a 404 page.
+  // 404 page.
   {
     path: '**',
     redirectTo: '/not-found',

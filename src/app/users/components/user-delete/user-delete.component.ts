@@ -3,6 +3,7 @@ import {NgIcon} from "@ng-icons/core";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteDialogComponent} from "../../../shared";
 import {take} from "rxjs";
+import {SnackBarService} from "../../../services";
 
 @Component({
   selector: 'app-user-delete',
@@ -23,6 +24,7 @@ import {take} from "rxjs";
 export class UserDeleteComponent {
 
   private dialog: MatDialog = inject(MatDialog);
+  private snackBarService = inject(SnackBarService);
 
   handleDeleteUserDialog() {
 
@@ -30,8 +32,11 @@ export class UserDeleteComponent {
     dialogRef.componentInstance.itemToDeleteName = 'User';
 
     dialogRef.afterClosed().pipe(take(1)).subscribe((result: boolean) => {
-      console.log(result);
-      //   Call user delete.
+
+      // Not implemented because I could not find the way to delete an user on firebase authentication
+      // without to be logged.
+      if (result) this.snackBarService.showFailSnackBar('This feature is not implemented sorry, It')
+
     });
   }
 }

@@ -1,4 +1,5 @@
 import {Routes} from "@angular/router";
+import {authAdminGuard} from "../auth";
 
 const usersRoutes: Routes = [
   {
@@ -15,6 +16,7 @@ const usersRoutes: Routes = [
   // Should be admin.
   {
     path: 'users-list',
+    canActivate: [authAdminGuard],
     title: 'User List',
     loadComponent: () => import('./pages/user-list/user-list.component'),
   },

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {
   createUserWithEmailAndPassword,
   FacebookAuthProvider,
@@ -16,11 +16,14 @@ import {
 import {FirebaseAuth} from "../../firebase.config";
 import {FirebaseAuthResponse, handlingFirebaseAuthErrors} from "../helpers";
 import {FirebaseAuthUser} from "../models";
+import {FirestoreUsersService} from "../../users";
 
 @Injectable({
   providedIn: "root"
 })
 export class FirebaseAuthService {
+
+  private firestoreUsersService = inject(FirestoreUsersService);
 
   public async onCreateUserWithEmailAndPassword(email: string, password: string): Promise<{
     success: boolean,
@@ -34,7 +37,7 @@ export class FirebaseAuthService {
       const {user} = await createUserWithEmailAndPassword(FirebaseAuth, email, password);
 
       // Map User credentials to FirebaseAuthUser
-      const firebaseAuthUserData = this.mapUserData(user);
+      const firebaseAuthUserData = await this.mapUserData(user);
 
       return FirebaseAuthResponse.successWithUserAsPayload(firebaseAuthUserData);
 
@@ -55,7 +58,7 @@ export class FirebaseAuthService {
       const {user} = await signInWithEmailAndPassword(FirebaseAuth, email, password);
 
       // Map User credentials to FirebaseAuthUser
-      const firebaseAuthUserData = this.mapUserData(user);
+      const firebaseAuthUserData = await this.mapUserData(user);
 
       return FirebaseAuthResponse.successWithUserAsPayload(firebaseAuthUserData);
     } catch (e: any) {
@@ -87,7 +90,7 @@ export class FirebaseAuthService {
       const {user} = await signInWithPopup(FirebaseAuth, googleAuthProvider);
 
       // Map User credentials to FirebaseAuthUser
-      const firebaseAuthUserData = this.mapUserData(user);
+      const firebaseAuthUserData = await this.mapUserData(user);
 
       return FirebaseAuthResponse.successWithUserAsPayload(firebaseAuthUserData);
 
@@ -110,7 +113,7 @@ export class FirebaseAuthService {
       const {user} = await signInWithPopup(FirebaseAuth, githubProvider);
 
       // Map User credentials to FirebaseAuthUser
-      const firebaseAuthUserData = this.mapUserData(user);
+      const firebaseAuthUserData = await this.mapUserData(user);
 
       return FirebaseAuthResponse.successWithUserAsPayload(firebaseAuthUserData);
 
@@ -132,7 +135,7 @@ export class FirebaseAuthService {
       const {user} = await signInWithPopup(FirebaseAuth, facebookProvider);
 
       // Map User credentials to FirebaseAuthUser
-      const firebaseAuthUserData = this.mapUserData(user);
+      const firebaseAuthUserData = await this.mapUserData(user);
 
       return FirebaseAuthResponse.successWithUserAsPayload(firebaseAuthUserData);
     } catch (e: any) {
@@ -209,8 +212,12 @@ export class FirebaseAuthService {
     return providerData.map(data => data.providerId);
   }
 
-  private mapUserData(userCredential: User): FirebaseAuthUser {
+  private async mapUserData(userCredential: User) {
     const {metadata, uid, phoneNumber, providerData, emailVerified, photoURL, displayName, email} = userCredential;
+
+    // Check is userName is already in used;
+    const userOnDb = await this.firestoreUsersService.getUserById(uid);
+    const userName = userOnDb ? userOnDb.userName : displayName;
 
     return {
       uid,
@@ -218,7 +225,7 @@ export class FirebaseAuthService {
       email,
       emailVerified,
       phoneNumber,
-      userName: displayName,
+      userName,
       providers: this.getProviders(providerData),
       creationTime: metadata.creationTime,
       lastSignInTime: metadata.lastSignInTime,

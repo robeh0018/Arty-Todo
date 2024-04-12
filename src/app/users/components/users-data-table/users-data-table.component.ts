@@ -37,7 +37,6 @@ import {formatDatesForUI} from "../../../helpers";
 export class UsersDataTableComponent implements OnChanges {
   displayedColumns: WritableSignal<string[]> = signal<string[]>([]);
   dataSource: MatTableDataSource<UserTableData> = new MatTableDataSource<UserTableData>();
-  // sortedUserTableData: WritableSignal<UserTableData[]> = signal<UserTableData[]>([]);
 
   @Input({required: true}) userTableData: UserTableData[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;

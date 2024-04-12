@@ -55,6 +55,7 @@ export class EditUserDialogComponent implements OnInit {
   private fb = inject(FormBuilder);
   private dialogRef: MatDialogRef<EditUserDialogComponent> = inject(MatDialogRef);
   private data = inject(MAT_DIALOG_DATA);
+  private userId: string = '';
 
   private appLoadingService = inject(AppLoadingService);
 
@@ -62,14 +63,12 @@ export class EditUserDialogComponent implements OnInit {
     this.userForm = this.initForm();
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.appLoadingService.setIsLoading(true);
 
-    await this.handleUserData();
+    this.handleUserData();
 
     this.appLoadingService.setIsLoading(false);
-
-    this.handlePhoneNumber();
   }
 
   public onCancel() {
@@ -78,42 +77,45 @@ export class EditUserDialogComponent implements OnInit {
   }
 
   public onAgreeResults() {
-    console.log(this.userForm.value)
-    this.dialogRef.close();
+
+    this.dialogRef.close({userFormValues: this.userForm.value, userId: this.userId});
   }
 
   private initForm(): FormGroup<UserFormTypes> {
 
     return this.fb.group({
-      email: ['', [Validators.email, Validators.required]],
-      userName: ['', [Validators.maxLength(10), Validators.minLength(3)]],
+      userName: ['', [Validators.maxLength(30), Validators.minLength(3)]],
       fullName: ['', Validators.maxLength(50)],
       role: ['user', Validators.required],
-      // Phone number should have this format (111) 111-1111.
-      phoneNumber: ['', Validators.pattern(/^\(\d{3}\) \d{3}-\d{4}$/)],
     })
   }
 
-  private async handleUserData() {
-    const userData = await this.data.userData
+  private handleUserData() {
+    const userData = this.data.userData;
 
-    this.userForm.patchValue({...userData});
+    const {uid, ...rest} = userData;
+
+    this.userId = uid;
+
+    this.userForm.patchValue({...rest});
   }
 
+  // Phone number should have this format (111) 111-1111.
+  // phoneNumber: ['', Validators.pattern(/^\(\d{3}\) \d{3}-\d{4}$/)],
 
-  private handlePhoneNumber() {
-    const phoneNumber = this.userForm.controls.phoneNumber;
-
-    phoneNumber.valueChanges.subscribe(phoneNumberValue => {
-
-      if (phoneNumberValue?.length === 1) phoneNumber.patchValue('(' + phoneNumberValue);
-
-      if (phoneNumberValue?.length === 4) phoneNumber.patchValue(phoneNumberValue + ')');
-
-      if (phoneNumberValue?.length === 5) phoneNumber.patchValue(phoneNumberValue + ' ');
-
-      if (phoneNumberValue?.length === 9) phoneNumber.patchValue(phoneNumberValue + '-');
-    })
-  };
+  // private handlePhoneNumber() {
+  //   const phoneNumber = this.userForm.controls.phoneNumber;
+  //
+  //   phoneNumber.valueChanges.subscribe(phoneNumberValue => {
+  //
+  //     if (phoneNumberValue?.length === 1) phoneNumber.patchValue('(' + phoneNumberValue);
+  //
+  //     if (phoneNumberValue?.length === 4) phoneNumber.patchValue(phoneNumberValue + ')');
+  //
+  //     if (phoneNumberValue?.length === 5) phoneNumber.patchValue(phoneNumberValue + ' ');
+  //
+  //     if (phoneNumberValue?.length === 9) phoneNumber.patchValue(phoneNumberValue + '-');
+  //   })
+  // };
 
 }
