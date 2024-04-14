@@ -79,28 +79,31 @@
         </div>
       </div>
 
-      <!--      &lt;!&ndash;Phone Number&ndash;&gt;-->
-      <!--      <div class="w-full">-->
-      <!--        <label class="font-medium text-sm" for="fullName">Phone number</label>-->
-      <!--        <div class="relative">-->
-      <!--          <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">-->
-      <!--            <ng-icon-->
-      <!--              [ngClass]="{'text-red-500':-->
-      <!--          userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.dirty && userForm.controls.phoneNumber.touched}"-->
-      <!--              class="text-pink-300 text-sm"-->
-      <!--              name="bootstrapTelephone"/>-->
-      <!--          </div>-->
-      <!--          <input-->
-      <!--            [ngClass]="{'border-red-500 focus:ring-red-500 focus:ring-offset-red-500':-->
-      <!--        userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.dirty && userForm.controls.phoneNumber.touched}"-->
-      <!--            class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus"-->
-      <!--            formControlName="phoneNumber"-->
-      <!--            id="phoneNumber"-->
-      <!--            placeholder="Ex. First Last name"-->
-      <!--            type="text"-->
-      <!--          >-->
-      <!--        </div>-->
-      <!--      </div>-->
+      <!--Phone number-->
+      <div
+        style="view-transition-name: password-input"
+      >
+        <label class="font-medium" for="password">Phone number</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+            <ng-icon
+              [ngClass]="{'text-red-500':
+          userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.dirty && userForm.controls.phoneNumber.touched}"
+              class="text-pink-300 text-sm"
+              name="bootstrapTelephone"/>
+          </div>
+          <input
+            (keyup)="handlePhoneNumberKeyUp($event)"
+            [ngClass]="{'border-red-500 focus:ring-red-500 focus:ring-offset-red-500':
+        userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.dirty && userForm.controls.phoneNumber.touched}"
+            class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus "
+            formControlName="phoneNumber"
+            id="password"
+            placeholder="(111) 111-1111"
+            type="text"
+          >
+        </div>
+      </div>
 
       <!--Role-->
       <div class="w-full flex flex-col items-center">

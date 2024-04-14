@@ -202,7 +202,7 @@ export class FirebaseAuthService {
       console.log(`Error on Update user Password email ${e.code}`);
       return FirebaseAuthResponse.fail(e.code);
     }
-  }
+  };
 
   public getFirebaseUserAuthenticated() {
     return FirebaseAuth.currentUser;

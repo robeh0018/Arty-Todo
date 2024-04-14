@@ -21,10 +21,9 @@ import {
 } from '@ng-icons/bootstrap-icons';
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {AppLoadingService} from "../../../../services";
+import {formatPhoneNumberForUi, handlePhoneNumberInputKeyUp} from "../../../helpers";
 
 @Component({
-  selector: 'app-edit-user-dialog',
-  standalone: true,
   imports: [
     NgClass,
     DatepickerComponent,
@@ -37,8 +36,10 @@ import {AppLoadingService} from "../../../../services";
     MatRadioGroup,
     MatRadioButton
   ],
-  templateUrl: './edit-user-dialog.component.html',
+  selector: 'app-edit-user-dialog',
+  standalone: true,
   styles: ``,
+  templateUrl: './edit-user-dialog.component.html',
   viewProviders: [
     provideIcons({
       bootstrapEnvelope,
@@ -81,11 +82,20 @@ export class EditUserDialogComponent implements OnInit {
     this.dialogRef.close({userFormValues: this.userForm.value, userId: this.userId});
   }
 
+
+  public handlePhoneNumberKeyUp($event: KeyboardEvent) {
+
+    const phoneNumberControl = this.userForm.controls.phoneNumber;
+
+    handlePhoneNumberInputKeyUp($event, phoneNumberControl);
+  }
+
   private initForm(): FormGroup<UserFormTypes> {
 
     return this.fb.group({
       userName: ['', [Validators.maxLength(30), Validators.minLength(3)]],
       fullName: ['', Validators.maxLength(50)],
+      phoneNumber: ['', Validators.pattern(/^\(\d{3}\) \d{3}-\d{4}$/)],
       role: ['user', Validators.required],
     })
   }
@@ -93,29 +103,12 @@ export class EditUserDialogComponent implements OnInit {
   private handleUserData() {
     const userData = this.data.userData;
 
-    const {uid, ...rest} = userData;
+    const {uid, phoneNumber, ...rest} = userData;
+
+    const formatedPhoneNumber = formatPhoneNumberForUi(phoneNumber);
 
     this.userId = uid;
 
-    this.userForm.patchValue({...rest});
+    this.userForm.patchValue({phoneNumber: formatedPhoneNumber, ...rest});
   }
-
-  // Phone number should have this format (111) 111-1111.
-  // phoneNumber: ['', Validators.pattern(/^\(\d{3}\) \d{3}-\d{4}$/)],
-
-  // private handlePhoneNumber() {
-  //   const phoneNumber = this.userForm.controls.phoneNumber;
-  //
-  //   phoneNumber.valueChanges.subscribe(phoneNumberValue => {
-  //
-  //     if (phoneNumberValue?.length === 1) phoneNumber.patchValue('(' + phoneNumberValue);
-  //
-  //     if (phoneNumberValue?.length === 4) phoneNumber.patchValue(phoneNumberValue + ')');
-  //
-  //     if (phoneNumberValue?.length === 5) phoneNumber.patchValue(phoneNumberValue + ' ');
-  //
-  //     if (phoneNumberValue?.length === 9) phoneNumber.patchValue(phoneNumberValue + '-');
-  //   })
-  // };
-
 }

@@ -76,7 +76,25 @@ export class FirestoreUsersService {
 
     try {
 
-      const {userName, fullName, role} = payload;
+      // User exist.
+      const userExist = await this.getUserById(userId);
+
+      if (!userExist) return;
+
+      const docRef = doc(FirebaseDb, "users", userId);
+
+      await updateDoc(docRef, {...payload});
+
+      this.snackBarService.showSuccessSnackBar('User updated');
+    } catch (e) {
+      console.log(`Error while updating user: ${e}`);
+
+      this.snackBarService.showFailSnackBar('User update');
+    }
+  }
+
+  public async updatePhoneNumber(userId: string, newPhoneNumber: string) {
+    try {
 
       // User exist.
       const userExist = await this.getUserById(userId);
@@ -85,13 +103,13 @@ export class FirestoreUsersService {
 
       const docRef = doc(FirebaseDb, "users", userId);
 
-      await updateDoc(docRef, {userName, fullName, role});
+      await updateDoc(docRef, {phoneNumber: newPhoneNumber});
 
-      this.snackBarService.showSuccessSnackBar('User updated');
+      this.snackBarService.showSuccessSnackBar('Phone number updated');
     } catch (e) {
-      console.log(`Error while updating user: ${e}`);
 
-      this.snackBarService.showFailSnackBar('User update');
+      console.log(`Error while updating user phone number: ${e}`);
+      this.snackBarService.showFailSnackBar('Phone number update');
     }
   }
 

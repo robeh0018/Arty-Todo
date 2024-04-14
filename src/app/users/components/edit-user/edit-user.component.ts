@@ -6,6 +6,7 @@ import {EditUserDialogComponent} from "../ui";
 import {UserUpdatePayload} from "../../models";
 import {AdminUsersService} from "../../services";
 import {AppLoadingService} from "../../../services";
+import {formatPhoneNumberForDb} from "../../helpers";
 
 @Component({
   selector: 'app-edit-user',
@@ -36,7 +37,7 @@ export class EditUserComponent {
       data: {
         userData: this.getUserData(),
       },
-
+      disableClose: true,
       width: '30rem',
     });
 
@@ -47,7 +48,11 @@ export class EditUserComponent {
       if (result !== undefined) {
         this.appLoadingService.setIsLoading(true);
 
-        await this.adminUsersService.adminUpdateUser(result.userId, result.userFormValues)
+        const {phoneNumber, ...rest} = result.userFormValues;
+
+        const formatedPhoneNumber = formatPhoneNumberForDb(phoneNumber);
+
+        await this.adminUsersService.adminUpdateUser(result.userId, {phoneNumber: formatedPhoneNumber, ...rest})
 
         this.appLoadingService.setIsLoading(false);
       }
@@ -60,10 +65,11 @@ export class EditUserComponent {
 
     // if (users.length === 0) return;
 
-    return users.map(({uid, userName, fullName, role}) => ({
+    return users.map(({uid, userName, fullName, role, phoneNumber}) => ({
       uid,
       userName,
       fullName,
+      phoneNumber,
       role,
     }))[0];
   }
