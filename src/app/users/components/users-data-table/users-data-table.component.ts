@@ -10,6 +10,7 @@ import {UserDeleteComponent} from "../user-delete/user-delete.component";
 import {EditUserComponent} from "../edit-user/edit-user.component";
 import {UserTableData} from "../../models";
 import {formatDatesForUI} from "../../../helpers";
+import {formatPhoneNumberForUi} from "../../helpers";
 
 
 @Component({
@@ -69,9 +70,12 @@ export class UsersDataTableComponent implements OnChanges {
   };
 
   public handleTableTimes(time: string) {
-
-    return formatDatesForUI(new Date(time))
+    return formatDatesForUI(new Date(time));
   };
+
+  public handleTablePhoneNumbers(phoneNumber: string | null) {
+    return formatPhoneNumberForUi(phoneNumber);
+  }
 
   public handleAddUser() {
     console.log('add')

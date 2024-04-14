@@ -84,9 +84,9 @@ export class AuthService {
 
       // This is because if the email is @gmail.com google is the trustiest provider and firebase overwrite before
       // authentications with others providers.
-      const isADifferentProvider = !!userData?.providers.find(provider => provider !== 'google.com');
+      const isGoogleProvider = !!userData?.providers.find(provider => provider === 'google.com');
 
-      if (!userData || isADifferentProvider) {
+      if (!userData || !isGoogleProvider) {
         console.log('sign up')
         //   Sign up.
         const newUser: User = {
@@ -228,7 +228,7 @@ export class AuthService {
 
   private async handleUserData(payload: FirebaseAuthUser): Promise<User | undefined> {
     // Update fields which can get changes.
-    const {uid, providers, emailVerified, lastSignInTime, phoneNumber} = payload;
+    const {uid, providers, emailVerified, lastSignInTime} = payload;
 
     const userExist = await this.firestoreUsersService.getUserById(payload.uid);
 
@@ -239,7 +239,6 @@ export class AuthService {
       lastSignInTime,
       emailVerified,
       providers,
-      phoneNumber
     });
 
     // Load and set user from firestore.

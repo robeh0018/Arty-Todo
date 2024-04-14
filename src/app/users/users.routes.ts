@@ -12,6 +12,11 @@ const usersRoutes: Routes = [
     title: 'New Password',
     loadComponent: () => import('./pages/user-new-password-page/user-new-password-page.component'),
   },
+  {
+    path: 'phone-number',
+    title: 'Phone number',
+    loadComponent: () => import('./pages/user-phone-number/user-phone-number.component'),
+  },
 
   // Should be admin.
   {

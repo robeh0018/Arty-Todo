@@ -39,6 +39,9 @@
             @case ('lastSignInTime') {
               {{ handleTableTimes(row[displayedColumn]) }}
             }
+            @case ('phoneNumber') {
+              {{ row[displayedColumn] ? handleTablePhoneNumbers(row[displayedColumn]) : '---'}}
+            }
 
             <!--Email verified-->
             @case ('emailVerified') {

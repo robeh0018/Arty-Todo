@@ -1,0 +1,70 @@
+<app-user-layout-page>
+
+  <!--Title section-->
+  <div class="text-center antialiased">
+
+    <h1 class="text-3xl font-extrabold">
+      Phone Number
+    </h1>
+
+    <p class="mt-1">
+      Enter a new phone number you want and click on the save button.
+    </p>
+
+    <p class="mt-1">
+      We will redirect you to the login page when the process finish.
+    </p>
+
+
+    <div>
+      <p class="mt-1">
+        <ng-icon class="text-pink-400" name="bootstrapInfoCircle"/>
+        Phone number should have this format
+      </p>
+      <p class="text-pink-400"> (111) 111-1111.</p>
+    </div>
+
+  </div>
+
+
+  <form
+    (ngSubmit)=" onSubmit()"
+    [formGroup]="phoneNumberForm"
+    class="w-full flex flex-col gap-4">
+
+    <!--Phone number-->
+    <div
+      style="view-transition-name: password-input"
+    >
+      <label class="font-medium" for="password">Phone number</label>
+      <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+          <ng-icon
+            [ngClass]="{'text-red-500':
+          phoneNumberForm.controls.phoneNumber.invalid && phoneNumberForm.controls.phoneNumber.dirty && phoneNumberForm.controls.phoneNumber.touched}"
+            class="text-pink-300 text-sm"
+            name="bootstrapTelephone"/>
+        </div>
+        <input
+          (keyup)="handleKeyUp($event)"
+          [ngClass]="{'border-red-500 focus:ring-red-500 focus:ring-offset-red-500':
+        phoneNumberForm.controls.phoneNumber.invalid && phoneNumberForm.controls.phoneNumber.dirty && phoneNumberForm.controls.phoneNumber.touched}"
+          class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus "
+          formControlName="phoneNumber"
+          id="password"
+          placeholder="(111) 111-1111"
+          type="text"
+        >
+      </div>
+    </div>
+
+    <button
+      [disabled]="phoneNumberForm.invalid || appLoadingService.getIsLoading()()"
+      [ngClass]="phoneNumberForm.invalid || appLoadingService.getIsLoading()() ? 'bg-pink-400' : 'bg-pink-600 hover:bg-pink-500 on-focus'"
+      class="font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all"
+      type="submit">
+      Save
+    </button>
+
+  </form>
+</app-user-layout-page>

@@ -24,7 +24,9 @@ import {
   bootstrapPersonHeart,
   bootstrapPlus,
   bootstrapSearch,
-  bootstrapTrash
+  bootstrapTrash,
+  bootstrapTelephone,
+  bootstrapInfoCircle
 } from '@ng-icons/bootstrap-icons';
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {AppLoadingService} from "./services";
@@ -48,6 +50,7 @@ import {AppLoadingService} from "./services";
       bootstrapGear,
       bootstrapGithub,
       bootstrapGoogle,
+      bootstrapInfoCircle,
       bootstrapKey,
       bootstrapListTask,
       bootstrapPencil,
@@ -57,6 +60,7 @@ import {AppLoadingService} from "./services";
       bootstrapPersonHeart,
       bootstrapPlus,
       bootstrapSearch,
+      bootstrapTelephone,
       bootstrapTrash
     })
   ],

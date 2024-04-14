@@ -5,8 +5,8 @@
   <ng-icon class="text-xl" name="bootstrapGear"/>
   <span class="text-xs">Settings</span>
 </a>
-<mat-menu #menu="matMenu" class="bg-neutral-900">
-  <div class="bg-neutral-900 h-fit">
+<mat-menu #menu="matMenu" class="p-0 m-0">
+  <div class="bg-neutral-900 p-0">
 
     <!--My profile-->
     <button
@@ -14,7 +14,7 @@
       mat-menu-item
       routerLink="/users/user-profile">
       <ng-icon
-        class="text-xl hover:text-pink-300"
+        class="text-sm hover:text-pink-300"
         matMenuItemIcon
         name="bootstrapPerson"
       />
@@ -30,10 +30,24 @@
       <ng-icon
         [name]="currentUser()?.emailVerified ? 'bootstrapEnvelopeCheck' : 'bootstrapEnvelopeX'"
         [ngClass]="currentUser()?.emailVerified ? 'text-green-400' : 'text-red-400'"
-        class="text-xl"
+        class="text-sm"
         matMenuItemIcon
       />
       <span class="text-sm">{{ currentUser()?.emailVerified ? 'Email verified' : 'Verify email' }}</span>
+    </button>
+
+    <!--Update Email address-->
+    <button
+      class="flex gap-2 items-center"
+      mat-menu-item
+      routerLink="/users/email-address"
+    >
+      <ng-icon
+        class="text-sm hover:text-pink-300"
+        matMenuItemIcon
+        name="bootstrapEnvelope"
+      />
+      <span class="text-sm">Update email address</span>
     </button>
 
     <!--Update password-->
@@ -43,11 +57,25 @@
       routerLink="/users/new-password"
     >
       <ng-icon
-        class="text-xl hover:text-pink-300"
+        class="text-sm hover:text-pink-300"
         matMenuItemIcon
         name="bootstrapKey"
       />
-      <span class="text-sm">Update Password</span>
+      <span class="text-sm">Update password</span>
+    </button>
+
+    <!--Update phone number-->
+    <button
+      class="flex gap-2 items-center"
+      mat-menu-item
+      routerLink="/users/phone-number"
+    >
+      <ng-icon
+        class="text-sm hover:text-pink-300"
+        matMenuItemIcon
+        name="bootstrapTelephone"
+      />
+      <span class="text-sm">Update phone number</span>
     </button>
 
     <mat-divider class="bg-black h-0.5"/>
@@ -59,7 +87,7 @@
       mat-menu-item
     >
       <ng-icon
-        class="text-xl text-red-400"
+        class="text-sm text-red-400"
         matMenuItemIcon
         name="bootstrapArrowBarLeft"
       />

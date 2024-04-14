@@ -35,7 +35,9 @@ export class AddTodoComponent {
   private todosService: TodosService = inject(TodosService);
 
   handleAddTodoDialog(): void {
-    const dialogRef = this.dialog.open(AddTodoDialogComponent);
+    const dialogRef = this.dialog.open(AddTodoDialogComponent, {
+      disableClose: true,
+    });
 
     dialogRef.afterClosed().pipe(take(1)).subscribe(async (result: { title: string, dueDate: Date } | undefined) => {
       if (result === undefined) return;
