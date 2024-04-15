@@ -15,8 +15,10 @@ export const handlingFirebaseAuthErrors = (errorMessage: string) => {
       return "Email exists with different credentials"
     case 'auth/popup-closed-by-user':
       return "Authentication process cancelled"
+    case "auth/operation-not-allowed":
+      return 'Something went wrong with our provider'
 
     default:
-      return 'Unknown error happened'
+      return 'Unknown error happened, we are working on it'
   }
 }

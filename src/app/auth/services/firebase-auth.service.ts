@@ -9,6 +9,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateEmail,
   updatePassword,
   User,
   UserInfo
@@ -157,7 +158,7 @@ export class FirebaseAuthService {
     } catch (e: any) {
 
       console.log(`Error on send Password Reset email ${e.code}`);
-      return FirebaseAuthResponse.fail(e.code);
+      return FirebaseAuthResponse.fail(handlingFirebaseAuthErrors(e.code));
     }
   }
 
@@ -177,7 +178,7 @@ export class FirebaseAuthService {
     } catch (e: any) {
 
       console.log(`Error on send Email verification ${e.code}`);
-      return FirebaseAuthResponse.fail(e.code);
+      return FirebaseAuthResponse.fail(handlingFirebaseAuthErrors(e.code));
     }
 
   }
@@ -199,8 +200,30 @@ export class FirebaseAuthService {
       return FirebaseAuthResponse.successWithMessageAsPayload('You are not signing in for a long time');
     } catch (e: any) {
 
-      console.log(`Error on Update user Password email ${e.code}`);
-      return FirebaseAuthResponse.fail(e.code);
+      console.log(`Error on Update user Password ${e.code}`);
+      return FirebaseAuthResponse.fail(handlingFirebaseAuthErrors(e.code));
+    }
+  };
+
+  public async onUpdateUserEmail(newEmail: string): Promise<{
+    success: boolean,
+    payload: string | null,
+    error: string | null
+  }> {
+    try {
+      const currentUser = FirebaseAuth.currentUser;
+
+      if (currentUser) {
+        await updateEmail(currentUser, newEmail);
+
+        return FirebaseAuthResponse.successWithMessageAsPayload('Your email have been updated');
+      }
+
+      return FirebaseAuthResponse.successWithMessageAsPayload('You are not signing in for a long time');
+    } catch (e: any) {
+
+      console.log(`Error on Update user Email ${e.code}`);
+      return FirebaseAuthResponse.fail(handlingFirebaseAuthErrors(e.code));
     }
   };
 

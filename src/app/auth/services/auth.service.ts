@@ -199,6 +199,15 @@ export class AuthService {
     if (success && payload) this.snackBarService.showSuccessSnackBar(payload);
   }
 
+  public async authUpdateUserEmail(newEmail: string): Promise<void> {
+
+    const {success, payload, error} = await this.firebaseAuthService.onUpdateUserEmail(newEmail);
+
+    if (!success && error) return this.handleFailedAuthentication(error);
+
+    if (success && payload) this.snackBarService.showSuccessSnackBar(payload);
+  }
+
   public async authSignOut(): Promise<void> {
     await this.firebaseAuthService.onSignOut();
 

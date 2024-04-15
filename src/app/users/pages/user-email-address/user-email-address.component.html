@@ -1,0 +1,57 @@
+<app-user-layout-page>
+
+  <!--Title section-->
+  <div class="text-center antialiased">
+
+    <h1 class="text-3xl font-extrabold">
+      Email Address
+    </h1>
+
+    <p class="mt-1">
+      Enter a new email address you want and click on the save button.
+    </p>
+
+    <p class="mt-1">We will redirect you to the login page when the process finish.</p>
+  </div>
+
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="emailForm"
+    class="w-full flex flex-col gap-4">
+
+    <!--  email-->
+    <div
+      style="view-transition-name: email-input"
+    >
+      <label class="font-medium" for="email">Email Address</label>
+      <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+          <ng-icon
+            [ngClass]="{'text-red-500':
+          emailForm.controls.email.invalid && emailForm.controls.email.dirty && emailForm.controls.email.touched}"
+            class="text-pink-300 text-sm"
+            name="bootstrapEnvelope"/>
+        </div>
+        <input
+          [ngClass]="{'border-red-500 focus:ring-red-500 focus:ring-offset-red-500':
+        emailForm.controls.email.invalid && emailForm.controls.email.dirty && emailForm.controls.email.touched}"
+          class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus"
+          formControlName="email"
+          id="email"
+          placeholder="Ex. example@google.com"
+          type="email"
+        >
+      </div>
+    </div>
+
+    <button
+      [disabled]="emailForm.invalid || appLoadingService.getIsLoading()()"
+      [ngClass]="emailForm.invalid || appLoadingService.getIsLoading()() ? 'bg-pink-400' : 'bg-pink-600 hover:bg-pink-500 on-focus'"
+      class="font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all"
+      type="submit">
+      Save
+    </button>
+
+  </form>
+</app-user-layout-page>
+

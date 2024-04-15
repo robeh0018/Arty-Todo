@@ -17,6 +17,11 @@ const usersRoutes: Routes = [
     title: 'Phone number',
     loadComponent: () => import('./pages/user-phone-number/user-phone-number.component'),
   },
+  {
+    path: 'email-address',
+    title: 'Email address',
+    loadComponent: () => import('./pages/user-email-address/user-email-address.component'),
+  },
 
   // Should be admin.
   {
