@@ -1,11 +1,11 @@
-<div class="bg-neutral-900">
+<div class="bg-default">
   <!--Head-->
   <h3 class="text-lg font-normal" mat-dialog-title>
     Add a new <span class="text-pink-400">toDo</span>.
   </h3>
 
   <!--Modal content-->
-  <mat-dialog-content class="p-5 md:p-10 space-y-7">
+  <mat-dialog-content class="p-1 md:p-10 space-y-7">
 
     <!--Close left top button-->
     <button
@@ -23,10 +23,11 @@
 
 
     <!-- Add toDos form -->
-    <form [formGroup]="addTodoForm" class="px-3 w-[300px]">
+    <form [formGroup]="addTodoForm" class="px-1 sm:px-3 min-w-[280px] max-w-[300px]">
 
-      <div class="mb-5 text-pink-100 flex flex-col gap-1">
-        <label for="title">Title</label>
+      <!-- Title-->
+      <div class="mb-5 text-pink-100 flex flex-col gap-1 h-16">
+        <label for="title" class="font-medium text-sm">Title</label>
         <input
           [ngClass]="{
         'focus:ring-red-400 focus:ring-offset-red-400 border-red-400': addTodoForm.get('title')?.invalid &&
@@ -40,7 +41,7 @@
         >
         @if (addTodoForm.get('title')?.invalid &&
         (addTodoForm.get('title')?.touched || addTodoForm.get('title')?.dirty)) {
-          <span class="text-sm text-red-400 w-fit">This field is required*</span>
+          <span class="text-xs text-red-400 w-fit">This field is required*</span>
         }
       </div>
 

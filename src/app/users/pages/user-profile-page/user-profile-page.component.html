@@ -1,57 +1,77 @@
-<section class="flex flex-col md:flex-row gap-5 w-full sm:w-[600px] p-1 sm:p-5 m-auto">
+<app-user-layout-page>
 
-  <!--  image-->
-  <div class="rounded-3xl border border-pink-400 h-64 w-full sm:w-80 md:w-52 flex m-auto shadow-md shadow-pink-300">
+  <section class="w-full sm:w-[600px] p-1 ps-2 md:ps-0 sm:p-5 m-auto">
 
-    @if (currentUser()?.photoURL) {
+    <div class="flex flex-col sm:flex-row gap-6 w-full">
 
-      <img
-        alt="Profile img"
-        class="rounded-3xl m-auto"
-        height="150"
-        [ngSrc]="currentUser()?.photoURL!"
-        width="150"
-        priority
-      >
+      <div
+        class="border-dashed border-pink-500 border-t-2 sm:border-l-2 sm:border-t-0 pt-3 sm:pt-0 sm:ps-3 rounded-lg h-fit m-auto sm:ms-0">
+        <!--  image-->
+        @if (currentUser()?.photoURL) {
 
-    } @else {
+          <img
+            alt="Profile img"
+            class="rounded-full m-auto"
+            height="150"
+            [ngSrc]="currentUser()?.photoURL!"
+            width="150"
+            priority
+          >
 
-      <ng-icon
-        class="m-auto text-pink"
-        name="bootstrapPerson"
-        size="150px"/>
-    }
+        } @else {
 
-  </div>
+          <ng-icon
+            class="m-auto text-pink"
+            name="bootstrapPerson"
+            size="150px"/>
+        }
+      </div>
 
-  <!--  Info-->
-  <div class="py-2  space-y-3 tracking-wide">
-    <h3 class="text-5xl">Profile info:</h3>
+      <!--  Info-->
+      <div
+        class="py-2 space-y-3 tracking-wide h-fit rounded-lg border-dashed border-pink-500 border-t-2 sm:border-l-2 sm:border-t-0 px-2 pt-3 sm:pt-0 sm:ps-3 m-auto sm:ms-0">
+        <h3 class="text-4xl">Profile info:</h3>
 
-    <div class="flex flex-col">
-      <span class="font-bold">Email address</span>
-      <span>{{ currentUser()?.email ?? 'adressgoogle.com' }}</span>
+        <div class="flex items-center gap-2">
+          <ng-icon
+            class="text-pink-400"
+            matTooltip="Email address" name="bootstrapEnvelope"/>
+          <span>{{ currentUser()?.email ?? '---' }}</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <ng-icon
+            class="text-pink-400"
+            matTooltip="User name" name="bootstrapPersonHeart"/>
+          <span>{{ currentUser()?.userName ?? '---' }}</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <ng-icon
+            class="text-pink-400"
+            matTooltip="Full name" name="bootstrapPersonCheck"/>
+          <span>{{ currentUser()?.fullName ?? '---' }}</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <ng-icon
+            class="text-pink-400"
+            matTooltip="Phone number" name="bootstrapTelephone"/>
+          <span>{{ this.handlePhoneNumberUi(currentUser()?.phoneNumber!) ?? '---' }}</span>
+        </div>
+
+
+        <button
+          (click)="handleSignOut()"
+          [disabled]="appLoadingService.getIsLoading()()"
+          class="rounded-xl py-2 px-4 hover:scale-105 flex items-center gap-1 on-focus transition-all">
+          <ng-icon class="text-red-400" name="bootstrapArrowBarLeft"/>
+          Log out
+        </button>
+      </div>
+
     </div>
-
-    <div class="flex flex-col">
-      <span class="font-bold">User Name</span>
-      <span>{{ currentUser()?.userName ?? 'No user name' }}</span>
-    </div>
-    <div class="flex flex-col">
-      <span class="font-bold">Full Name</span>
-      <span>{{ currentUser()?.fullName ?? 'No full name' }}</span>
-    </div>
-
-    <button
-      (click)="handleSignOut()"
-      [disabled]="appLoadingService.getIsLoading()()"
-      class="border border-pink-100 rounded-xl py-2 px-4 hover:bg-neutral-800 flex items-center gap-1 on-focus transition-all">
-      <ng-icon class="text-red-400" name="bootstrapArrowBarLeft"/>
-      Log out
-    </button>
-  </div>
-
-
-</section>
+  </section>
+</app-user-layout-page>
 
 

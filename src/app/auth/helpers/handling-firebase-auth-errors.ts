@@ -19,6 +19,6 @@ export const handlingFirebaseAuthErrors = (errorMessage: string) => {
       return 'Something went wrong with our provider'
 
     default:
-      return 'Unknown error happened, we are working on it'
+      return 'Unknown error happened, support contact robeh0018@gmail.com'
   }
 }

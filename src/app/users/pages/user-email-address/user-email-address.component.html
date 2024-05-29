@@ -11,7 +11,10 @@
       Enter a new email address you want and click on the save button.
     </p>
 
-    <p class="mt-1">We will redirect you to the login page when the process finish.</p>
+    <app-danger-alert
+      alertText="We are experimented errors on this feature, but don't worry we are working to fix it."
+    />
+
   </div>
 
   <form
@@ -21,7 +24,7 @@
 
     <!--  email-->
     <div
-      style="view-transition-name: email-input"
+      style="view-transition-name: update-input"
     >
       <label class="font-medium" for="email">Email Address</label>
       <div class="relative">

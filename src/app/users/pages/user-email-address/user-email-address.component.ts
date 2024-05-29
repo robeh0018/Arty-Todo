@@ -6,6 +6,7 @@ import {EmailFormTypes} from "../../models";
 import {NgClass} from "@angular/common";
 import {AppLoadingService} from "../../../services";
 import {AuthService} from "../../../auth";
+import {DangerAlertComponent} from "../../../shared";
 
 @Component({
   selector: 'app-user-email-address',
@@ -15,7 +16,8 @@ import {AuthService} from "../../../auth";
     NgIcon,
     ReactiveFormsModule,
     UserLayoutPageComponent,
-    NgClass
+    NgClass,
+    DangerAlertComponent
   ],
   templateUrl: './user-email-address.component.html',
   styles: ``

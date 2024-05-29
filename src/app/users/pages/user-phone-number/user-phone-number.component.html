@@ -11,11 +11,6 @@
       Enter a new phone number you want and click on the save button.
     </p>
 
-    <p class="mt-1">
-      We will redirect you to the login page when the process finish.
-    </p>
-
-
     <div>
       <p class="mt-1">
         <ng-icon class="text-pink-400" name="bootstrapInfoCircle"/>
@@ -34,9 +29,9 @@
 
     <!--Phone number-->
     <div
-      style="view-transition-name: password-input"
+      style="view-transition-name: update-input"
     >
-      <label class="font-medium" for="password">Phone number</label>
+      <label class="font-medium" for="phoneNumber">Phone number</label>
       <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
           <ng-icon
@@ -51,7 +46,7 @@
         phoneNumberForm.controls.phoneNumber.invalid && phoneNumberForm.controls.phoneNumber.dirty && phoneNumberForm.controls.phoneNumber.touched}"
           class="w-full bg-black bg-opacity-20 rounded border border-gray-800 py-2 ps-10 px-3.5 text-sm -tracking-tighter on-focus "
           formControlName="phoneNumber"
-          id="password"
+          id="phoneNumber"
           placeholder="(111) 111-1111"
           type="text"
         >

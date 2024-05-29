@@ -4,6 +4,9 @@ import {NgOptimizedImage} from "@angular/common";
 import {AuthService, AuthStoreService} from "../../../auth";
 import {AppLoadingService} from "../../../services";
 import {User} from "../../models";
+import {MatTooltip} from "@angular/material/tooltip";
+import {formatPhoneNumberForUi} from "../../helpers";
+import {UserLayoutPageComponent} from "../user-layout-page/user-layout-page.component";
 
 
 @Component({
@@ -11,7 +14,9 @@ import {User} from "../../models";
   standalone: true,
   imports: [
     NgIcon,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatTooltip,
+    UserLayoutPageComponent
   ],
   templateUrl: './user-profile-page.component.html',
   styles: ``
@@ -24,7 +29,12 @@ export default class UserProfilePageComponent {
 
   constructor() {
     this.currentUser = this.authStoreService.getCurrentUser();
+    console.log(this.currentUser()?.photoURL)
   }
+
+  public handlePhoneNumberUi(phoneNumber: string | null) {
+    return formatPhoneNumberForUi(phoneNumber);
+  };
 
   public async handleSignOut() {
 

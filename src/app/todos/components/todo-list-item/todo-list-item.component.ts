@@ -24,7 +24,7 @@ import {formatDatesForUI} from "../../../helpers";
           <ng-icon name="bootstrapCheckCircle"></ng-icon>
         }
 
-        <p class="ms-3 max-w-[300px] truncate"> {{ todo.title }}</p>
+        <p class="ms-3 max-w-[230px] sm:max-w-[300px] truncate"> {{ todo.title }}</p>
       </div>
 
       <div>
