@@ -16,14 +16,13 @@ import {AppLoadingService} from "../../../services";
     NgIcon,
     NgClass,
     RouterLink,
-    MatDivider
+    MatDivider,
   ],
   templateUrl: './user-settings-menu.component.html',
   styles: `
   `
 })
 export class UserSettingsMenuComponent {
-
   public currentUser: Signal<User | null>;
 
   private authStoreService = inject(AuthStoreService);

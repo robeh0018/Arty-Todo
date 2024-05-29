@@ -19,13 +19,14 @@ import {provideNativeDateAdapter} from '@angular/material/core';
       class="flex items-center justify-center gap-2 mb-5 text-pink-100 w-full"
     >
 
-      <div class="flex flex-col gap-1 w-full">
-        <label>Due Date</label>
+      <div class="flex flex-col gap-1 w-full h-16">
+        <label class="font-medium text-sm" for="dueDate">Due Date</label>
         <input
+          id="dueDate"
           [formControlName]="formControlNameD"
           [matDatepicker]="picker"
           [ngClass]="{
-        'focus:ring-red-500 focus:ring-offset-red-500 border-red-500':
+        'focus:ring-red-400 focus:ring-offset-red-400 border-red-400':
          getFormControl(formControlNameD)?.invalid &&
         (getFormControl(formControlNameD)?.touched || getFormControl(formControlNameD)?.dirty)
       }"
@@ -36,12 +37,12 @@ import {provideNativeDateAdapter} from '@angular/material/core';
         @if (getFormControl(formControlNameD)?.invalid &&
         (getFormControl(formControlNameD)?.touched || getFormControl(formControlNameD)?.dirty)) {
           <!--Min Date info message-->
-          <span class="text-sm text-red-500">
+          <span class="text-xs text-red-400">
             <span class="font-bold">Min Date:</span>
             {{ minDate.toDateString() }}
           </span>
           <!--Max Date info message-->
-          <span class="text-sm text-red-500">
+          <span class="text-xs text-red-400">
                <span class="font-bold">Max Date:</span>
             {{ maxDate.toDateString() }}
           </span>
@@ -49,7 +50,7 @@ import {provideNativeDateAdapter} from '@angular/material/core';
       </div>
 
       <mat-datepicker-toggle class="h-5 w-5" [for]="picker">
-        <mat-datepicker #picker panelClass="bg-neutral-900"></mat-datepicker>
+        <mat-datepicker #picker panelClass="bg-default"></mat-datepicker>
       </mat-datepicker-toggle>
 
     </form>

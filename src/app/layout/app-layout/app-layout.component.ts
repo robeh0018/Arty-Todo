@@ -1,23 +1,26 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from "@angular/router";
-import {NavBarComponent} from "../../shared";
+import {FooterComponent, NavBarComponent} from "../../shared";
 
 @Component({
   standalone: true,
   imports: [
     RouterOutlet,
-    NavBarComponent
+    NavBarComponent,
+    FooterComponent
   ],
   template: `
-    <!--Navbar-->
-    <app-nav-bar/>
-
-    <div class="mt-16">
+    <div class="h-dvh">
+      <!--Navbar-->
+      <header>
+        <app-nav-bar/>
+      </header>
 
       <router-outlet/>
 
+      <!--Footer-->
+      <app-footer/>
     </div>
-    <!--Footer-->
   `,
   styles: ``
 })

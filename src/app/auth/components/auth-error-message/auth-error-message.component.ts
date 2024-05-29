@@ -19,8 +19,8 @@ import {AuthStoreService} from "../../services";
   ],
   template: `
     <div class="flex items-center">
-      <span style="color: #ef4444; font-weight: bolder" matSnackBarLabel>
-        {{ errorMessage() }}, try again.
+      <span style="color: #ef4444; font-weight: bold" matSnackBarLabel>
+        {{ errorMessage() }}, try again later.
       </span>
 
       <span matSnackBarActions>
